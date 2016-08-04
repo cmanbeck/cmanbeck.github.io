@@ -1,0 +1,25 @@
+body {
+	font-family: 'Lato', sans-serif;
+}
+
+.button {
+	background-color: #1CACF6;
+	color: white;
+	font-family: 'Lato', sans-serif;
+	font-size: 24px;
+	cursor: pointer;
+	border: none;
+	border-radius: 12px;
+	padding: 20px; 
+    width: 140px;
+    height: 80px;
+    text-align: center;
+    text-decoration: none;
+	-webkit-transition-duration: 0.4s;
+    transition-duration: 0.4s;
+}
+
+.button:hover {
+    background-color: #0879FD;
+    color: white;
+}
