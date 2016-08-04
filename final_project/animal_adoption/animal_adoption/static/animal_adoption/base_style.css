@@ -1,0 +1,23 @@
+body {
+	background-color: #FFFFFF;
+}
+
+.page-header {
+    background-color: #68D265;
+    margin-top: 0;
+    padding: 10px 10px 10px 10px;
+}
+
+.page-header h1, .page-header h1 a, .page-header h1 a:visited, .page-header h1 a:active {
+    color: #ffffff;
+/*    font-size: 36pt;*/
+    text-decoration: none;
+    -webkit-transition-duration: 0.4s;
+    transition-duration: 0.4s;
+    display: inline-block;
+    margin: 10px;
+}
+
+h1, h2, h3, h4 {
+    font-family: 'Lato', sans-serif;
+}

@@ -16,25 +16,25 @@ class UserProfileForm(forms.ModelForm):
         model = UserProfile
         fields = ('website',)
 
-class CreatePost(forms.ModelForm):
-	class Meta:
-		model = Member
-		fields = [
-			"username",
-			"password",
-		]
+# class CreatePost(forms.ModelForm):
+# 	class Meta:
+# 		model = Member
+# 		fields = [
+# 			"username",
+# 			"password",
+# 		]
 
-class UpdatePost(forms.ModelForm):
-	class Meta:
-		user_post = forms.CharField()
+# class UpdatePost(forms.ModelForm):
+# 	class Meta:
+# 		user_post = forms.CharField()
 
-class PostForm(forms.ModelForm):
-    class Meta:
+# class PostForm(forms.ModelForm):
+#     class Meta:
 
-        fields = [
-            "title",
-            "content",
-        ]
-        widgets = {
-            "content": Textarea(attrs={"cols": 50, "rows": 10}),
-        }
+#         fields = [
+#             "title",
+#             "content",
+#         ]
+#         widgets = {
+#             "content": Textarea(attrs={"cols": 50, "rows": 10}),
+        # }

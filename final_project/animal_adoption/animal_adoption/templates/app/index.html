@@ -71,9 +71,9 @@
 
     <form method="POST" action="{% url 'animal_adoption:login' %}">
         {% csrf_token %}
-        <h4>hello</h4>
-        <input type="text" placeholder="enter name" name="username"/>
-        <input type="text" placeholder="enter password" name="password"/>
+        
+        <input type="text" placeholder="Username" name="username"/>
+        <input type="text" placeholder="Password" name="password"/>
         <input type="submit" value = "Log In" class = "button">
     <!--     <dl>
             <dt>
