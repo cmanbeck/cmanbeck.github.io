@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
-  <title>Index</title>
+  <title>Login or Register</title>
 
     {% load staticfiles %}
 
@@ -66,24 +66,25 @@
         <p class="error">Please correct the errors below:</p>
     {% endif %} -->
 
+	<h3>Create an Account</h3>
+    <!-- <form action='{%url "animal_adoption:register"%}' method="POST">
+        {% csrf_token %}
 
-	<div class="row">
-    <form class="col s12" action='{%url "animal_adoption:home"%}' method="POST">
-      {% csrf_token %}
-      <div class="row">
-        <div class="input-field col s6">
-          <input name="username" placeholder="Username" id="username" type="text" class="validate">
-          <label for="username">Username</label>
-        </div>
-        <div class="input-field col s6">
-          <input name="password" id="password" type="text" class="validate">
-          <label for="password">Password</label>
-        </div>
-      </div>
-      <button class="btn login-submit waves-effect waves-light" type="submit" name="action">Submit
-  	    <i class="material-icons right">send</i>
-  	  </button>     
-    </form>
+
+	    <input name="username" placeholder="Username" id="username" type="text" class="validate">
+	    <br>
+	    
+	    <input name="password" placeholder = "Password" id="password" type="text" class="validate">
+	    <br>
+        
+    	<button type="submit" class = "button">Register</button>  
+    </form> -->
+	<form action="{% url 'animal_adoption:register' %}" method = "POST">
+		{% csrf_token %}
+		{{ user_form.as_p }}
+		{{ profile_form.as_p }}
+		<input type = "button" class = "button" value = "Register"/>
+	</form>
 
     <h3>Log in</h3>
 
@@ -95,32 +96,6 @@
         <input type="text" placeholder="Password" name="password"/>
         <br>
         <input type="submit" value = "Log In" class = "button">
-    <!--     <dl>
-            <dt>
-                <label for="id_username">Username:</label>
-                <br>
-                <input type = "text">
-                {% if form.username.errors %} 
-                    <span class="error">{{ form.username.errors|join:", " }}</span>
-                {% endif %}
-            </dt>
-
-            <dd>{{ form_auth.username }}</dd>
-
-            <dt>
-                <label for="id_password">Password:</label>
-                <br>
-                <input type = "password">
-                {% if form.password.errors %}
-                    <span class="error">{{ form.password.errors|join:", " }}</span>
-                {% endif %}
-            </dt>
-
-            <dd>{{ form_auth.password }}</dd>
-
-            <dt><input type="submit" value="Log in" class = "button"/></dt>
-
-        </dl> -->
     </form>
 </body>
 </html>

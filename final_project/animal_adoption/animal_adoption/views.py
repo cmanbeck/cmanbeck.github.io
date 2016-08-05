@@ -11,12 +11,7 @@ from django.template import RequestContext
 from django.http import HttpResponse, HttpResponseNotAllowed
 from django import forms
 from django.utils.datastructures import MultiValueDict
-from .models import User
-try:
-    from .models import Member, Quiz, UserProfile
-except Exception:
-    from models import Member, Quiz, UserProfile
-from .forms import *
+from .models import *
 
 class Home(View):
 
@@ -27,67 +22,86 @@ class Home(View):
         return render(request, self.template)
 
     def post(self, request):
-        return render(request, self.template)
+        return HttpResponse(render(request, self.template))
 
 class Login(View):
 
     template_name = "app/login.html"
     template = "app/login.html"
-    # model = Post
     context_object_name = 'posts'
 
     def get(self, request, pk = None):
+        # form in here
+        # context
+        # pass
         return render(request, self.template)
 
     def post(self,request):
-        print(request.POST["username"])
-        print(request)
-        print(request.body)
-        username = request.POST['username']
         password = request.POST['password']
-        print(username)
-        print(password)
-        # print(request.POST["username"])
-        # username = request.POST["username"]
-        # member = get_object_or_404(Member,username=username)
-        # if check_password(request.POST["password"],member.password):
-        #     if member.is_active:
-        #         request.session['member_id'] = member.id
-        #         return redirect("animal_adoption:home")
-        #         HttpResponse("You are logged in.")
-        # else:
-        #     return render(request,self.template_name,{"error":"Invalid username or password"})
-
         current_user = User.objects.filter(username = username)
-        print('=======================================')
-        print(request)
-        print(current_user)
-        print('=======================================')
 
         if (len(current_user) == 1 and password == current_user[0].password):
 
             request.session['member_id'] = current_user[0].id
-            return redirect('animal_adoption:home')
+            return HttpResponse(redirect('animal_adoption:home'))
 
         else: 
             return HttpResponse('Invalid Login')
 
 class Register(View):
 
-    # form_class = RegistrationForm
-    # model = User
-
     template_name = "app/login.html"
     template = "app/login.html"
 
-    def get(self,request):
-        return render_to_response(request, self.template_name,)
+    def get(self, request):
+        if request.user.is_authenticated():
+            return render(request, 'home.html', {})
+        user_form = UserForm()
+        profile_form = UserProfileForm()
+        context = {
+            'user_form': user_form,
+            'profile_form': profile_form
+        }
+        return render(request, self.template, context)
 
-    def post(self,request):
-        member = Member.objects.create(username=request.POST['username'],password=make_password(request.POST["password"]))
-        member.save()
-        member = get_object_or_404(Member,username = request.POST['username'])
-        request.session['member_id'] = member.id
-        return render_to_response("animal_adoption/home.html"
+    def post(self, request):
+        user_form = UserForm(data=request.POST)
+        profile_form = UserProfileForm(data=request.POST)
 
+        if user_form.is_valid() and profile_form.is_valid():
+            user = user_form.save()
+            profile = profile_form.save(commit = False)
+            profile.user = user
+            profile.save()
+            return redirect('/')
 
+        else:
+            context = {
+                'user_form': user_form,
+                'profile_form': profile_form
+            }
+
+            return render(request, self.template, context)
+
+    # def get(self,request):
+    #     return HttpResponse(render_to_response(request, self.template_name,))
+
+    # def post(self,request):
+    #     print(Member)
+    #     print(request.POST)
+    #     username = request.POST['username']
+    #     password = request.POST['password']
+    #     print(username)
+    #     print(password)
+    #     print(type(username))
+    #     member = Member.objects.create_user(username,password)
+    #     # member = Member.objects.create(user=request.POST)
+    #     member.save()
+    #     member = get_object_or_404(Member,username = request.POST['username'])
+    #     request.session['member_id'] = member.id
+    #     print('=======================================')
+    #     print(request)
+    #     print(username)
+    #     print(password)
+    #     print('=======================================')
+    #     return HttpResponse(render_to_response("animal_adoption/home.html"))

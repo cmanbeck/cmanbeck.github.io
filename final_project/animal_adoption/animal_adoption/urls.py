@@ -9,5 +9,6 @@ urlpatterns = [
     url(r'^admin/', admin.site.urls),
     # url(r'^index/', Index.as_view(), name = "index"),
     url(r'^login/', Login.as_view(), name = "login"),
+    url(r'^register/', Register.as_view(), name = "register"),
     url(r'^', Home.as_view(), name = "home"),
 ]
