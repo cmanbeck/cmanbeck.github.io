@@ -16,6 +16,21 @@ class UserProfileForm(forms.ModelForm):
         model = UserProfile
         fields = ('website',)
 
+class RegistrationForm(forms.Form):
+    username = forms.EmailField(max_length=30)
+    password1 = forms.CharField()
+    password2 = forms.CharField()
+    email = forms.EmailField(max_length=100)
+
+    def clean(self):
+        cleaned_data = super(RegistrationForm, self).clean()
+        username = cleaned_data.get("username")
+        password1 = cleaned_data.get("password1")
+        password2 = cleaned_data.get("password2")
+
+    class Meta:
+        model = User
+
 # class CreatePost(forms.ModelForm):
 # 	class Meta:
 # 		model = Member
