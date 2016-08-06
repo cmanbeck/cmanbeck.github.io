@@ -12,6 +12,7 @@ from django.http import HttpResponse, HttpResponseNotAllowed
 from django import forms
 from django.utils.datastructures import MultiValueDict
 from .models import *
+from .forms import *
 
 class Home(View):
 
@@ -28,22 +29,35 @@ class Login(View):
 
     template_name = "app/login.html"
     template = "app/login.html"
-    context_object_name = 'posts'
+    # context_object_name = 'posts'
 
-    def get(self, request, pk = None):
+    def get(self, request):
         # form in here
         # context
         # pass
-        return render(request, self.template)
+        user_form = UserForm()
+        profile_form = UserProfileForm()
+        print(user_form)
+        print(profile_form)
+        context = {
+            'user_form': user_form,
+            'profile_form': profile_form
+        }
+
+        return render(request, self.template, context)
 
     def post(self,request):
+        username = request.POST['username']
         password = request.POST['password']
         current_user = User.objects.filter(username = username)
+        print(username)
+        print(password)
+        print(current_user[0].password)
 
         if (len(current_user) == 1 and password == current_user[0].password):
 
-            request.session['member_id'] = current_user[0].id
-            return HttpResponse(redirect('animal_adoption:home'))
+            # request.session['member_id'] = current_user[0].id
+            return redirect('animal_adoption:home')
 
         else: 
             return HttpResponse('Invalid Login')
