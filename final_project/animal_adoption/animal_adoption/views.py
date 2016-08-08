@@ -29,12 +29,8 @@ class Login(View):
 
     template_name = "app/login.html"
     template = "app/login.html"
-    # context_object_name = 'posts'
 
     def get(self, request):
-        # form in here
-        # context
-        # pass
         user_form = UserForm()
         profile_form = UserProfileForm()
         print(user_form)
@@ -50,16 +46,16 @@ class Login(View):
         username = request.POST['username']
         password = request.POST['password']
         current_user = User.objects.filter(username = username)
-        print(username)
-        print(password)
-        print(current_user[0].password)
 
-        if (len(current_user) == 1 and password == current_user[0].password):
-
-            # request.session['member_id'] = current_user[0].id
+        # if (len(current_user) == 1 and password == current_user[0].password):
+        if (password == current_user[0].password):
+            print(current_user)
+            print(current_user.password)
+            request.session['member_id'] = current_user[0].id
             return redirect('animal_adoption:home')
 
         else: 
+            print('++++++++++++++++++++++')
             return HttpResponse('Invalid Login')
 
 class Register(View):
@@ -96,26 +92,3 @@ class Register(View):
             }
 
             return render(request, self.template, context)
-
-    # def get(self,request):
-    #     return HttpResponse(render_to_response(request, self.template_name,))
-
-    # def post(self,request):
-    #     print(Member)
-    #     print(request.POST)
-    #     username = request.POST['username']
-    #     password = request.POST['password']
-    #     print(username)
-    #     print(password)
-    #     print(type(username))
-    #     member = Member.objects.create_user(username,password)
-    #     # member = Member.objects.create(user=request.POST)
-    #     member.save()
-    #     member = get_object_or_404(Member,username = request.POST['username'])
-    #     request.session['member_id'] = member.id
-    #     print('=======================================')
-    #     print(request)
-    #     print(username)
-    #     print(password)
-    #     print('=======================================')
-    #     return HttpResponse(render_to_response("animal_adoption/home.html"))
