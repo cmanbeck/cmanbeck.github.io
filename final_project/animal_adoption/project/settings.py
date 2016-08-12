@@ -20,7 +20,10 @@ BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 # See https://docs.djangoproject.com/en/1.10/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = '&co^!e-t@8vncr_y)*upu3$2&n=fq=0jg%7-fu$z_-cdj3xjt='
+# SECRET_KEY = '&co^!e-t@8vncr_y)*upu3$2&n=fq=0jg%7-fu$z_-cdj3xjt='
+
+SECRET_KEY = PETAPI
+# export SETTINGS="9bcb387707897650aca44567d993f741"
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
@@ -100,7 +103,13 @@ AUTH_PASSWORD_VALIDATORS = [
         'NAME': 'django.contrib.auth.password_validation.NumericPasswordValidator',
     },
 ]
-
+# PASSWORD_HASHERS = [
+#     'django.contrib.auth.hashers.BCryptSHA256PasswordHasher',
+#     'django.contrib.auth.hashers.BCryptPasswordHasher',
+#     'django.contrib.auth.hashers.PBKDF2PasswordHasher',
+#     'django.contrib.auth.hashers.PBKDF2SHA1PasswordHasher',
+#     'django.contrib.auth.hashers.Argon2PasswordHasher',
+# ]
 
 # Internationalization
 # https://docs.djangoproject.com/en/1.10/topics/i18n/

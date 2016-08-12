@@ -6,10 +6,10 @@
 	<title>Home</title>
 
 	
-	
+	<link rel="stylesheet" href="http://www.w3schools.com/lib/w3.css">
 	<link href='https://fonts.googleapis.com/css?family=Lato' rel='stylesheet' type='text/css'>
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
-    <script   src="https://code.jquery.com/jquery-2.2.4.min.js"   integrity="sha256-BbhdlvQf/xTY9gja0Dq3HiwQF8LaCRTXxZKRutelT44=" crossorigin="anonymous"></script>
+    <script src="https://code.jquery.com/jquery-2.2.4.min.js"   integrity="sha256-BbhdlvQf/xTY9gja0Dq3HiwQF8LaCRTXxZKRutelT44=" crossorigin="anonymous"></script>
 
 </head>
 
@@ -17,9 +17,85 @@
 {% extends 'app/base.html' %}
 {% block content %}
 
-	<div id = "page">
-		<!-- <a href = "login.html">Login</a> -->
-	</div>
+	{{ petfinder }}
+
+	<div class = "search-div">
+		<article class = "search">
+	    	<p>Search function here</p>
+
+	    	<form action = "{% url 'animal_adoption:home' %}" method = "POST">
+			{% csrf_token %}
+
+			<h1>Location</h1>
+			<input type = "text" placeholder="Search by ZIP code or city">
+
+			<h1>Animal</h1>
+			<select>
+			  <option value="Barnyard">Barnyard</option>
+			  <option value="Bird">Bird</option>
+			  <option value="Cat">Cat</option>
+			  <option value="Dog">Dog</option>
+			  <option value="Horse">Horse</option>
+			  <option value="Pig">Pig</option>
+			  <option value="Reptile">Reptile</option>
+			  <option value="Small-Mammal">Small Mammal</option>
+			</select>
+
+			<h1>Breed</h1>
+			<input type = "text" placeholder="Enter a breed">
+
+			<h1>Sex</h1>
+			<select>
+			  <option value="Any">Any</option>
+			  <option value="Male">Male</option>
+			  <option value="Female">Female</option>
+			</select>
+
+			<h1>Size</h1>
+				<select>
+				  <option value="Any">Any</option>	
+				  <option value="Small">Small</option>
+				  <option value="Medium">Medium</option>
+				  <option value="Large">Large</option>
+				  <option value="Extra-Large">Extra-Large</option>
+				</select>
+
+			<h1>Age</h1>
+				<select>
+				  <option value="Any">Any</option>
+				  <option value="Baby">Baby</option>
+				  <option value="Young">Young</option>
+				  <option value="Adult">Adult</option>
+				  <option value="Senior">Senior</option>
+				</select>
+
+
+			<input type="submit" value = "Search">
+			</form>
+	    	
+
+	    </article>
+    
+		<article class = "featured">
+		<p>Featured pets here</p>
+    	</article>
+    
+    </div>
+
+
+    <aside class = "aside-1">
+		<p>Quiz</p>
+    </aside>
+
+    <aside class = "aside-2">
+		<p>Help</p>
+    </aside>
+
+    <aside class = "share">
+		<p>Share this page</p>
+    </aside>
+
+
 {% endblock %}
 </body>
 

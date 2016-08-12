@@ -6,13 +6,14 @@ from django.contrib.auth.models import AbstractBaseUser, PermissionsMixin
 
 class UserProfile(models.Model):
 	user = models.OneToOneField(User)
-	username = models.CharField(max_length=30)
-	password = models.CharField(max_length=30)
-	email = models.EmailField(unique = True)
+	username = models.CharField(max_length=30, default = None)
+	password = models.CharField(max_length=30, default = None)
+	email = models.EmailField(default = None)
 	# website = models.URLField(blank = True)
 
 	def __unicode__(self):
 		return self.user.username
+
 
 
 # class User(AbstractBaseUser, PermissionsMixin):

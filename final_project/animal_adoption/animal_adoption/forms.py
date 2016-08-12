@@ -8,25 +8,18 @@ class UserForm(UserCreationForm):
 
     class Meta:
         model = User
-        fields = ('username', 'email', 'password1', 'password2')
+        fields = ('username',)
 
 
 class UserProfileForm(forms.ModelForm):
     class Meta:
         model = UserProfile
-        fields = ('username', 'password', 'email')
+        fields = ('username', 'password', 'email',)
 
-# class UserForm(UserCreationForm):
-
-#     class Meta:
-#         model = User
-#         fields = ('username', 'email', 'password1', 'password2')
-
-
-# class UserProfileForm(forms.ModelForm):
-#     class Meta:
-#         model = UserProfile
-#         fields = ('website',)
+class CheckPassword(forms.ModelForm):
+	class Meta:
+		model = UserProfile
+		fields = ('username', 'password')
 
 # class RegistrationForm(forms.Form):
 #     username = forms.EmailField(max_length=30)
