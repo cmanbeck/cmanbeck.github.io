@@ -22,7 +22,8 @@ BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 # SECURITY WARNING: keep the secret key used in production secret!
 # SECRET_KEY = '&co^!e-t@8vncr_y)*upu3$2&n=fq=0jg%7-fu$z_-cdj3xjt='
 
-SECRET_KEY = PETAPI
+SECRET_KEY = os.environ['PETAPI']
+
 # export SETTINGS="9bcb387707897650aca44567d993f741"
 
 # SECURITY WARNING: don't run with debug turned on in production!

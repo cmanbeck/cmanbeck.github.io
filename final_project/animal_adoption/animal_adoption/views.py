@@ -1,5 +1,6 @@
-from datetime import date
 import requests
+import project.settings as settings
+from datetime import date
 from django.db import models
 from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib.auth import authenticate, login, logout
@@ -119,7 +120,7 @@ class APISample(View):
     template = "app/home.html"
 
     def get(self, request, pk= None):
-        
+        query = "http://api.petfinder.com/pet.getRandom?key=" + settings.SECRET_KEY + "&format=json"
         randomPet = requests.get(query).json()
         print(randomPet)
         return render(request, self.template, randomPet)
