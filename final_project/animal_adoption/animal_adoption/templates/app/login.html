@@ -9,82 +9,18 @@
     <link href='https://fonts.googleapis.com/css?family=Lato' rel='stylesheet' type='text/css'>
     <link rel="stylesheet" href="{% static 'animal_adoption/login_style.css' %}">
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
-    <!-- <script src="https://cdnjs.cloudflare.com/ajax/libs/foundation/6.2.0/foundation.min.js"></script> -->
-    <script   src="https://code.jquery.com/jquery-2.2.4.min.js"   integrity="sha256-BbhdlvQf/xTY9gja0Dq3HiwQF8LaCRTXxZKRutelT44=" crossorigin="anonymous"></script>
+    <script   src="https://code.jquery.com/jquery-2.2.4.min.js" integrity="sha256-BbhdlvQf/xTY9gja0Dq3HiwQF8LaCRTXxZKRutelT44=" crossorigin="anonymous"></script>
     
 
 </head>
 <body>
-  <!-- {% if form.errors %}
-        <p class="errors">Please correct the errors below: {{ form.non_field_errors }}</p>
-    {% endif %}
-
-    <h3>Create an Account</h3>
-
-    <form method="POST" action="{% url 'animal_adoption:home' %}" class="wide">
-    {% csrf_token %}
-        <p>
-          <label for="id_username">Username: </label>
-          <br>
-          <input type = "text">
-          {% if form.username.errors %}
-            <p class="errors">{{ form.username.errors.as_text }}</p>
-          {% endif %}
-          {{ form.username }}
-        </p>
-        <p>
-          <label for="id_email">Email: </label>
-          <br>
-          <input type = "text">
-          {% if form.email.errors %}
-            <p class="errors">{{ form.email.errors.as_text }}</p>
-          {% endif %}
-          {{ form.email }}
-        </p>
-        <p>
-          <label for="id_password1">Password: </label>
-          <br>
-          <input type = "password">
-          {% if form.password1.errors %}
-            <p class="errors">{{ form.password1.errors.as_text }}</p>
-          {% endif %}
-          {{ form.password1 }}
-        </p>
-        <p>
-          <label for="id_password2">Confirm Password: </label>
-          <br>
-          <input type = "password">
-          {% if form.password2.errors %}
-            <p class="errors">{{ form.password2.errors.as_text }}</p>
-          {% endif %}
-          {{ form.password2 }}
-        </p>
-        <p class="submit"><input type="submit" value="Register" class = "button"></p>
-    </form>
-
-    {% if form_auth.errors %}
-        <p class="error">Please correct the errors below:</p>
-    {% endif %} -->
 
 	<h3>Create an Account</h3>
-    <!-- <form action='{%url "animal_adoption:register"%}' method="POST">
-        {% csrf_token %}
 
-
-	    <input name="username" placeholder="Username" id="username" type="text" class="validate">
-	    <br>
-	    
-	    <input name="password" placeholder = "Password" id="password" type="text" class="validate">
-	    <br>
-        
-    	<button type="submit" class = "button">Register</button>  
-    </form> -->
 	<form action="{% url 'animal_adoption:register' %}" method = "POST">
 		{% csrf_token %}
-    <!-- {{ user_form.as_p }} -->
     {{ profile_form.as_p }}
 		
-
 		<input type = "submit" class = "button" value = "Register"/>
 	</form>
 
