@@ -55,7 +55,6 @@ class Login(View):
         hash_password = make_password(password)
         print (hash_password)
 
-        # if (len(current_user) == 1 and password == current_user[0].password):
         if (password == current_user.password):
             print(current_user)
             print(current_user.password)
@@ -132,9 +131,15 @@ class FindPet(View):
 
     template = "app/home.html"
 
+
     def get(self, request, pk = None):
+        animal = request.POST.get('animal')
+        query = "http://api.petfinder.com/pet.find?key=" + settings.SECRET_KEY + "&location=" + "&animal=" + animal + "&breed=" + "&sex=" + "&size=" + "&age=" + "&format=json"
+
 
         return render(request, self.template)
 
     def post(self, request):
+        request.POST
+        print(request.POST)
         return render(request, self.template)

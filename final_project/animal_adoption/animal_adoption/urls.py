@@ -12,5 +12,6 @@ urlpatterns = [
     url(r'^adopt/', Adopt.as_view(), name = "adopt"),
     url(r'^register/', Register.as_view(), name = "register"),
     url(r'^random_pet/', APISample.as_view(), name = "random_pet"),
+    url(r'^find_pet/', FindPet.as_view(), name = "find_pet"),
     url(r'^', Home.as_view(), name = "home"),
 ]

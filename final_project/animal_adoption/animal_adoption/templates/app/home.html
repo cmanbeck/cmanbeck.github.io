@@ -23,14 +23,15 @@
 		<article class = "search">
 	    	<p>Search function here</p>
 
-	    	<form action = "{% url 'animal_adoption:home' %}" method = "POST">
+	    	<form action = "{% url 'animal_adoption:find_pet' %}" method = "POST">
 			{% csrf_token %}
 
 			<h1>Location</h1>
 			<input type = "text" placeholder="Search by ZIP code or city">
 
 			<h1>Animal</h1>
-			<select>
+			<select name = "animal">
+			  <option value="Any">Any</option>	
 			  <option value="Barnyard">Barnyard</option>
 			  <option value="Bird">Bird</option>
 			  <option value="Cat">Cat</option>
@@ -42,10 +43,10 @@
 			</select>
 
 			<h1>Breed</h1>
-			<input type = "text" placeholder="Enter a breed">
+			<input name = "breed" type = "text" placeholder="Enter a breed">
 
 			<h1>Sex</h1>
-			<select>
+			<select name = "sex">
 			  <option value="Any">Any</option>
 			  <option value="Male">Male</option>
 			  <option value="Female">Female</option>
