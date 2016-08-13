@@ -52,11 +52,10 @@ class Login(View):
         print(userName)
         print(password)
         print(current_user.password)
-        hash_password = make_password(password)
-        print (hash_password)
+ #       hash_password = make_password(password)
+ #       print (hash_password)
 
         if (password == current_user.password):
-            print(current_user)
             print(current_user.password)
             # request.session['member_id'] = current_user.id
             return redirect('animal_adoption:home')
