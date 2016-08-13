@@ -48,21 +48,31 @@ class Login(View):
     def post(self,request):
         userName = request.POST['username']
         password = request.POST['password']
-        current_user = UserProfile.objects.get(username = userName)
-        print(userName)
-        print(password)
-        print(current_user.password)
- #       hash_password = make_password(password)
- #       print (hash_password)
 
-        if (password == current_user.password):
+        users = UserProfile.objects.all()
+        cur = False
+        for each in users:
+            if each.username == userName:
+                cur = True
+        if cur:
+            current_user = UserProfile.objects.get(username = userName)
+            print(userName)
+            print(password)
             print(current_user.password)
-            # request.session['member_id'] = current_user.id
-            return redirect('animal_adoption:home')
+     #       hash_password = make_password(password)
+     #       print (hash_password)
 
-        else: 
-            print('++++++++++++++++++++++')
-            return HttpResponse('Invalid Login')
+            if (password == current_user.password):
+                print(current_user.password)
+                # request.session['member_id'] = current_user.id
+                return redirect('animal_adoption:home')
+
+            else: 
+                print('++++++++++++++++++++++')
+                return HttpResponse('Incorrect password. Try again')
+        else:
+            print('++++++++++++++++++++++++')
+            return HttpResponse('No account associated with username')
 
 class Register(View):
 
@@ -132,9 +142,15 @@ class FindPet(View):
 
 
     def get(self, request, pk = None):
+        location = request.POST.get('location')
         animal = request.POST.get('animal')
-        query = "http://api.petfinder.com/pet.find?key=" + settings.SECRET_KEY + "&location=" + "&animal=" + animal + "&breed=" + "&sex=" + "&size=" + "&age=" + "&format=json"
-
+        breed = request.POST.get('breed')
+        sex = request.POST.get('sex')
+        size = request.POST.get('size')
+        age = request.POST.age('age')
+        
+        query = "http://api.petfinder.com/pet.find?key=" + settings.SECRET_KEY + "&location=" + location + "&animal=" + animal + "&breed=" + breed + "&sex=" + sex + "&size=" + size + "&age=" + age + "&format=json"
+        
 
         return render(request, self.template)
 
