@@ -170,9 +170,9 @@ class FindPet(View):
         age = request.POST.get('age')
         
         query = "http://api.petfinder.com/pet.find?key=" + settings.SECRET_KEY + "&location=" + location + "&animal=" + animal + "&breed=" + breed + "&sex=" + sex + "&size=" + size + "&age=" + age + "&format=json"
-        
-
-        return render(request, self.template)
+        search = requests.get(query).json()
+        print(search)
+        return render(request, self.template, search)
 
     def post(self, request):
         request.POST
