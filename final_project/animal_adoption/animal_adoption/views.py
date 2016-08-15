@@ -162,6 +162,19 @@ class FindPet(View):
 
 
     def get(self, request, pk = None):
+        # location = request.POST.get('location')
+        # animal = request.POST.get('animal')
+        # breed = request.POST.get('breed')
+        # sex = request.POST.get('sex')
+        # size = request.POST.get('size')
+        # age = request.POST.get('age')
+        
+        # query = "http://api.petfinder.com/pet.find?key=" + settings.SECRET_KEY + "&location=" + location + "&animal=" + animal + "&breed=" + breed + "&sex=" + sex + "&size=" + size + "&age=" + age + "&format=json"
+        # search = requests.get(query).json()
+        # print(search)
+        return render(request, self.template, search)
+
+    def post(self, request):
         location = request.POST.get('location')
         animal = request.POST.get('animal')
         breed = request.POST.get('breed')
@@ -172,9 +185,6 @@ class FindPet(View):
         query = "http://api.petfinder.com/pet.find?key=" + settings.SECRET_KEY + "&location=" + location + "&animal=" + animal + "&breed=" + breed + "&sex=" + sex + "&size=" + size + "&age=" + age + "&format=json"
         search = requests.get(query).json()
         print(search)
+        # request.POST
+        # print(request.POST)
         return render(request, self.template, search)
-
-    def post(self, request):
-        request.POST
-        print(request.POST)
-        return render(request, self.template)
