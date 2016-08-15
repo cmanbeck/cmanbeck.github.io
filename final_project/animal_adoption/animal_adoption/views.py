@@ -2,7 +2,7 @@ import requests
 import project.settings as settings
 from datetime import date
 from django.db import models
-from django.shortcuts import render, redirect, get_object_or_404
+from django.shortcuts import render, redirect, get_object_or_404, get_list_or_404
 from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.models import User
 from django.contrib.auth.hashers import make_password
@@ -158,21 +158,11 @@ class APISample(View):
 
 class FindPet(View):
 
-    template = "app/home.html"
+    template = "app/search.html"
 
 
     def get(self, request, pk = None):
-        # location = request.POST.get('location')
-        # animal = request.POST.get('animal')
-        # breed = request.POST.get('breed')
-        # sex = request.POST.get('sex')
-        # size = request.POST.get('size')
-        # age = request.POST.get('age')
-        
-        # query = "http://api.petfinder.com/pet.find?key=" + settings.SECRET_KEY + "&location=" + location + "&animal=" + animal + "&breed=" + breed + "&sex=" + sex + "&size=" + size + "&age=" + age + "&format=json"
-        # search = requests.get(query).json()
-        # print(search)
-        return render(request, self.template, search)
+        return render(request, self.template)
 
     def post(self, request):
         location = request.POST.get('location')
@@ -188,3 +178,47 @@ class FindPet(View):
         # request.POST
         # print(request.POST)
         return render(request, self.template, search)
+
+class SearchFilter(View):
+
+    template = "app/search.html"
+
+    def get(self, request, location, animal, breed, sex, size, age):
+        location = location.upper()
+        animal = animal[0].upper()+animal[1:].lower()
+        breed = breed[0].upper()+breed[1:].lower()
+        sex = sex[0].upper()+sex[1:].lower()
+        size = size[0].upper()+size[1:].lower()
+        age = age[0].upper()+age[1:].lower()
+
+        if location != None:
+            output = get_list_or_404(location=location, animal=animal, breed=breed, sex=sex, size=size, age=age)
+        else:
+            output = get_list_or_404(location=location)
+
+        lis = {}
+        for pet in output:
+            list[pet.pk]= {
+                'location': pet.location, 
+                'animal':pet.animal,
+                'breed': pet.breed,
+                'sex': pet.sex,
+                'size': pet.size,
+                'age': pet.age,
+            }
+        return JsonResponse(lis)
+
+        print('^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^')
+        return render(request, self.template)
+
+    def post(self, request):
+        print('******************************************')
+        return render(request, self.template)
+
+
+
+
+
+
+
+
