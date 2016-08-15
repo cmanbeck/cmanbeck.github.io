@@ -67,7 +67,7 @@ class Login(View):
                 # request.session['member_id'] = current_user.id
                 return redirect('animal_adoption:home')
 
-            else: 
+            else:
                 print('++++++++++++++++++++++')
                 return HttpResponse('Incorrect password. Try again')
         else:
@@ -106,7 +106,7 @@ class Register(View):
                 cur1 = False
             if each.email == request.POST['email']:
                 cur2 = False
-                
+
         if cur1 and cur2:
             if profile_form.is_valid():
                 # user = user_form.save()
@@ -130,7 +130,7 @@ class Register(View):
                 return HttpResponse("Username already taken")
             elif cur1 and not cur2:
                 return HttpResponse("Email already taken")
-            
+
 
 class Adopt(View):
 
@@ -162,19 +162,34 @@ class FindPet(View):
 
 
     def get(self, request, pk = None):
-        location = request.POST.get('location')
-        animal = request.POST.get('animal')
-        breed = request.POST.get('breed')
-        sex = request.POST.get('sex')
-        size = request.POST.get('size')
-        age = request.POST.get('age')
-        
+        print("JJJJJJJJJJJJJJJJJJJJJJJJJJJJJ")
+        location = request.POST.get('location')# or ""
+        animal = request.POST.get('animal') #or ""
+        breed = request.POST.get('breed') #or ""
+        sex = request.POST.get('sex') #or ""
+        size = request.POST.get('size') #or ""
+        age = request.POST.get('age') #or ""
+        print("JJJJJJJJJJJJJJJJJJJJJJJJJJJJJ")
+        print(settings.SECRET_KEY)
         query = "http://api.petfinder.com/pet.find?key=" + settings.SECRET_KEY + "&location=" + location + "&animal=" + animal + "&breed=" + breed + "&sex=" + sex + "&size=" + size + "&age=" + age + "&format=json"
-        
 
-        return render(request, self.template)
+        search = requests.get(query).json()
+        #print(search)
+
+        return render(request, self.template, search)
 
     def post(self, request):
-        request.POST
-        print(request.POST)
-        return render(request, self.template)
+        location = request.POST.get('location')# or ""
+        animal = request.POST.get('animal') #or ""
+        breed = request.POST.get('breed') #or ""
+        sex = request.POST.get('sex') #or ""
+        size = request.POST.get('size') #or ""
+        age = request.POST.get('age') #or ""
+        print("JJJJJJJJJJJJJJJJJJJJJJJJJJJJJ")
+        print(settings.SECRET_KEY)
+        query = "http://api.petfinder.com/pet.find?key=" + settings.SECRET_KEY + "&location=" + location + "&animal=" + animal + "&breed=" + breed + "&sex=" + sex + "&size=" + size + "&age=" + age + "&format=json"
+
+        search = requests.get(query).json()
+        #print(search)
+
+        return render(request, self.template, search)
