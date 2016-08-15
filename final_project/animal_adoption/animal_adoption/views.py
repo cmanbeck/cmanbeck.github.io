@@ -48,22 +48,31 @@ class Login(View):
     def post(self,request):
         userName = request.POST['username']
         password = request.POST['password']
-        current_user = UserProfile.objects.get(username = userName)
-        print(userName)
-        print(password)
-        print(current_user.password)
-        hash_password = make_password(password)
-        print (hash_password)
 
-        if (password == current_user.password):
-            print(current_user)
+        list_of_users = UserProfile.objects.all()
+        cur = False
+        for each in list_of_users:
+            if each.username == userName:
+                cur = True
+        if cur:
+            current_user = UserProfile.objects.get(username = userName)
+            print(userName)
+            print(password)
             print(current_user.password)
-            # request.session['member_id'] = current_user.id
-            return redirect('animal_adoption:home')
+     #       hash_password = make_password(password)
+     #       print (hash_password)
 
-        else: 
-            print('++++++++++++++++++++++')
-            return HttpResponse('Invalid Login')
+            if (password == current_user.password):
+                print(current_user.password)
+                # request.session['member_id'] = current_user.id
+                return redirect('animal_adoption:home')
+
+            else: 
+                print('++++++++++++++++++++++')
+                return HttpResponse('Incorrect password. Try again')
+        else:
+            print('++++++++++++++++++++++++')
+            return HttpResponse('No account associated with username')
 
 class Register(View):
 
@@ -84,24 +93,44 @@ class Register(View):
     def post(self, request):
         user_form = UserForm(data=request.POST)
         profile_form = UserProfileForm(data=request.POST)
+        #print("^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^")
         print(user_form)
         print(profile_form)
 
-        if profile_form.is_valid():
-            # user = user_form.save()
-            profile = profile_form.save(commit = False)
-            # profile.user = user_form.save()
-            profile.save()
-            # user.save()
-            return redirect('/')
+        list_of_users = UserProfile.objects.all()
+        cur1 = True
+        cur2 = True
+        for each in list_of_users:
+            #print(each.username)
+            if each.username == request.POST['username']:
+                cur1 = False
+            if each.email == request.POST['email']:
+                cur2 = False
+                
+        if cur1 and cur2:
+            if profile_form.is_valid():
+                # user = user_form.save()
+                profile = profile_form.save(commit = False)
+                # profile.user = user_form.save()
+                profile.save()
+                # user.save()
+                return redirect('/')
 
+            else:
+                context = {
+                    'user_form': user_form,
+                    'profile_form': profile_form
+                }
+
+                return render(request, self.template, context)
         else:
-            context = {
-                'user_form': user_form,
-                'profile_form': profile_form
-            }
-
-            return render(request, self.template, context)
+            if not cur1 and not cur2:
+                return HttpResponse("Account already exists")
+            elif not cur1 and cur2:
+                return HttpResponse("Username already taken")
+            elif cur1 and not cur2:
+                return HttpResponse("Email already taken")
+            
 
 class Adopt(View):
 
@@ -133,9 +162,15 @@ class FindPet(View):
 
 
     def get(self, request, pk = None):
+        location = request.POST.get('location')
         animal = request.POST.get('animal')
-        query = "http://api.petfinder.com/pet.find?key=" + settings.SECRET_KEY + "&location=" + "&animal=" + animal + "&breed=" + "&sex=" + "&size=" + "&age=" + "&format=json"
-
+        breed = request.POST.get('breed')
+        sex = request.POST.get('sex')
+        size = request.POST.get('size')
+        age = request.POST.get('age')
+        
+        query = "http://api.petfinder.com/pet.find?key=" + settings.SECRET_KEY + "&location=" + location + "&animal=" + animal + "&breed=" + breed + "&sex=" + sex + "&size=" + size + "&age=" + age + "&format=json"
+        
 
         return render(request, self.template)
 
