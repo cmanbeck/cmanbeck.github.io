@@ -67,7 +67,7 @@ class Login(View):
                 # request.session['member_id'] = current_user.id
                 return redirect('animal_adoption:home')
 
-            else: 
+            else:
                 print('++++++++++++++++++++++')
                 return HttpResponse('Incorrect password. Try again')
         else:
@@ -106,7 +106,7 @@ class Register(View):
                 cur1 = False
             if each.email == request.POST['email']:
                 cur2 = False
-                
+
         if cur1 and cur2:
             if profile_form.is_valid():
                 # user = user_form.save()
@@ -130,7 +130,7 @@ class Register(View):
                 return HttpResponse("Username already taken")
             elif cur1 and not cur2:
                 return HttpResponse("Email already taken")
-            
+
 
 class Adopt(View):
 
@@ -171,24 +171,52 @@ class FindPet(View):
         sex = request.POST.get('sex')
         size = request.POST.get('size')
         age = request.POST.get('age')
-        
+
         query = "http://api.petfinder.com/pet.find?key=" + settings.SECRET_KEY + "&location=" + location + "&animal=" + animal + "&breed=" + breed + "&sex=" + sex + "&size=" + size + "&age=" + age + "&format=json"
         search = requests.get(query).json()
-        # print(search)
 
-        # context = {}
-        # context["name"] = search.name
-        # context["breed"] = search.breed
-        # context['size'] = search.size
-        # context['sex'] = search.sex
-        # context["age"] = search.age
+        count = 0
+        for each in search['petfinder']['pets']['pet']:
+            print("NEW PET")
+            print(each.keys())
+            for x in each.values():
+                print("New info")
+                print(x.keys())
+                print(x.values())
+            count += 1
+        print(count)
 
-        # context["shelter"] = search.shelter
-        
-        # request.POST
-        # print(request.POST)
-        # return render(request, self.template, context)
-        return render(request, self.template, search)
+        petList = search['petfinder']['pets']['pet']
+        name,animal,age,sex,size,breed,shelterName,location = [],[],[],[],[],[],[],[]
+
+        for i in range(len(petList)):
+            name.append(petList[i]['name']['$t'])
+            animal.append(petList[i]['animal']['$t'])
+            age.append(petList[i]['age']['$t'])
+            sex.append(petList[i]['sex']['$t'])
+            size.append(petList[i]['size']['$t'])
+
+            if type(petList[i]['breeds']['breed']) == type(petList):
+                bred = []
+                for each in petList[i]['breeds']['breed']:
+                    bred.append(each['$t'])
+                breed.append(bred)
+
+            elif type(petList[i]['breeds']['breed']) == type(search):
+                breed.append([petList[i]['breeds']['breed']['$t']])
+
+            location.append([petList[i]['contact']['city']['$t'],petList[i]['contact']['state']['$t']])
+
+            print(name[i],"|",animal[i],"|",age[i],"|",sex[i],"|",size[i],"|",breed[i][:],"|",location[i][0],",",location[i][1])
+            print("")
+
+        searchFiltered = {}
+        searchFiltered['petfinder'] = {}
+        for i in range(len(petList)):
+            searchFiltered['petfinder'][name[i]] = animal[i],age[i],sex[i],size[i],breed[i][:],location[i][0],location[i][1]
+        print(searchFiltered)
+
+        return render(request, self.template, searchFiltered)
 
 class FindShelter(View):
 
@@ -204,49 +232,39 @@ class FindShelter(View):
         
         query = "http://api.petfinder.com/shelter.find?key=" + settings.SECRET_KEY + "&location=" + location + "&name=" + name + "&format=json"
         search = requests.get(query).json()
+
+        count = 0
+        for each in search['petfinder']['shelters']['shelter']:
+            print("##################################################")
+            print(each.keys())
+            for x in each.values():
+                print("New info")
+                print(x.keys())
+                print(x.values())
+            count += 1
+        print(count)
+
+        shelterList = search['petfinder']['shelters']['shelter']
+        name, location = [], []
+
+        # ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+        for i in range(len(shelterList)):
+            name.append(shelterList[i]['name']['$t'])
+            location.append([shelterList[i]['name']['$t'], shelterList[i]['address1']['$t'], shelterList[i]['city']['$t'], shelterList[i]['state']['$t'], shelterList[i]['email']['$t'], shelterList[i]['phone']['$t']])
+
+            print(name[i],"|",address1[i],"|",city[i],"|",state[i],"|",email[i],"|",phone[i],"|",location[i][0],",",location[i][1])
+            print("")
+
+        shelterFiltered = {}
+        shelterFiltered['petfinder'] = {}
+        for i in range(len(shelterList)):
+            shelterFiltered['petfinder'][name[i]] = name[i], address1[i], city[i], state[i], email[i], phone[i], location[i][0], location[i][1]
+        print(shelterFiltered)
+        
+        # ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
         return render(request, self.template, search)
 
-class SearchFilter(View):
 
-    template = "app/search.html"
 
-    def get(self, request):
-
-        # location = location.upper()
-        # animal = animal[0].upper()+animal[1:].lower()
-        # breed = breed[0].upper()+breed[1:].lower()
-        # sex = sex[0].upper()+sex[1:].lower()
-        # size = size[0].upper()+size[1:].lower()
-        # age = age[0].upper()+age[1:].lower()
-
-        location = request.POST.get('location')
-        animal = request.POST.get('animal')
-        breed = request.POST.get('breed')
-        sex = request.POST.get('sex')
-        size = request.POST.get('size')
-        age = request.POST.get('age')
-
-        if location != None:
-            output = get_list_or_404(location=location, animal=animal, breed=breed, sex=sex, size=size, age=age)
-        else:
-            output = get_list_or_404(location=location)
-
-        lis = {}
-        for pet in output:
-            lis[pet.pk]= {
-                'location': pet.location, 
-                'animal':pet.animal,
-                'breed': pet.breed,
-                'sex': pet.sex,
-                'size': pet.size,
-                'age': pet.age,
-            }
-
-        print('^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^')
-        return JsonResponse(lis)
-
-        return render(request, self.template)
-
-    def post(self, request):
-        print('******************************************')
-        return render(request, self.template)
