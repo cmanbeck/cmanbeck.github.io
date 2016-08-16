@@ -247,22 +247,22 @@ class FindShelter(View):
         shelterList = search['petfinder']['shelters']['shelter']
         name, location = [], []
 
-        # ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+        # ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
         for i in range(len(shelterList)):
             name.append(shelterList[i]['name']['$t'])
-            location.append([shelterList[i]['name']['$t'], shelterList[i]['address1']['$t'], shelterList[i]['city']['$t'], shelterList[i]['state']['$t'], shelterList[i]['email']['$t'], shelterList[i]['phone']['$t']])
+            location.append([shelterList[i]['address1']['$t'], shelterList[i]['city']['$t'], shelterList[i]['state']['$t']])
 
-            print(name[i],"|",address1[i],"|",city[i],"|",state[i],"|",email[i],"|",phone[i],"|",location[i][0],",",location[i][1])
+            print(address1[i],"|",city[i],"|",state[i],"|",location[i][0],",",location[i][1])
             print("")
 
         shelterFiltered = {}
         shelterFiltered['petfinder'] = {}
         for i in range(len(shelterList)):
-            shelterFiltered['petfinder'][name[i]] = name[i], address1[i], city[i], state[i], email[i], phone[i], location[i][0], location[i][1]
+            shelterFiltered['petfinder'][name[i]] = name[i], address1[i], city[i], state[i], location[i][0], location[i][1]
         print(shelterFiltered)
-        
-        # ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+        # ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
         return render(request, self.template, search)
 
