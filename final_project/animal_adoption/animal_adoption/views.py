@@ -190,6 +190,22 @@ class FindPet(View):
         # return render(request, self.template, context)
         return render(request, self.template, search)
 
+class FindShelter(View):
+
+    template = "app/search.html"
+
+
+    def get(self, request, pk = None):
+        return render(request, self.template)
+
+    def post(self, request):
+        location = request.POST.get('location')
+        name = request.POST.get('name')
+        
+        query = "http://api.petfinder.com/shelter.find?key=" + settings.SECRET_KEY + "&location=" + location + "&name=" + name + "&format=json"
+        search = requests.get(query).json()
+        return render(request, self.template, search)
+
 class SearchFilter(View):
 
     template = "app/search.html"

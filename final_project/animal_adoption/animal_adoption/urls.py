@@ -12,7 +12,7 @@ urlpatterns = [
     url(r'^register/', Register.as_view(), name = "register"),
     url(r'^random_pet/', APISample.as_view(), name = "random_pet"),
     url(r'^find_pet/', FindPet.as_view(), name = "find_pet"),
-    # url(r'^find_pet/s=(?P<location>[A-Za-z]\w)&c=(?P<animal>[A-Za-z]\w+)$',SearchFilter.as_view(),name='find_pet_filter'),
+    url(r'^find_shelter/', FindShelter.as_view(), name = "find_shelter"),
     url(r'^search_filter/',SearchFilter.as_view(),name='search_filter'),
     url(r'^', Home.as_view(), name = "home"),
 ]
