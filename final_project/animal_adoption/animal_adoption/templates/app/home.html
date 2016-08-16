@@ -74,12 +74,23 @@
 			<input type="submit" value = "Search">
 			</form>
 
-
-
-
 	    </article>
 
-	    <article class = "shelter-search">
+	    
+
+		<article class = "featured">
+		<p>Featured pets here</p>
+		            <SCRIPT src="https://fpm.petfinder.com/js/fpmstyle.js"></SCRIPT>
+            <SCRIPT src="https://fpm.petfinder.com/fp/petfeed.cgi?lang=json&callback=fpm1&state=&shelter=&animal=&age=&ref=123123412asdgfasdfg234qlgkhj1p928y4"></SCRIPT>
+
+    	</article>
+
+    </div>
+
+
+    <aside class = "aside-1">
+    	<p>Shelter search function here</p>
+		<article class = "shelter-search">
 
 	    	<form action = "{% url 'animal_adoption:find_shelter' %}" method = "POST">
 				{% csrf_token %}
@@ -94,19 +105,6 @@
 			</form>
 
 		</article>
-
-		<article class = "featured">
-		<p>Featured pets here</p>
-		            <SCRIPT src="https://fpm.petfinder.com/js/fpmstyle.js"></SCRIPT>
-            <SCRIPT src="https://fpm.petfinder.com/fp/petfeed.cgi?lang=json&callback=fpm1&state=&shelter=&animal=&age=&ref=123123412asdgfasdfg234qlgkhj1p928y4"></SCRIPT>
-
-    	</article>
-
-    </div>
-
-
-    <aside class = "aside-1">
-		<p>Quiz</p>
     </aside>
 
     <aside class = "aside-2">
