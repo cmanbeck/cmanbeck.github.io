@@ -166,6 +166,9 @@ class FindPet(View):
 
     def post(self, request):
         location = request.POST.get('location')
+        if location == "":
+            location = '10017'
+        print(location)
         animal = request.POST.get('animal')
         breed = request.POST.get('breed')
         sex = request.POST.get('sex')
@@ -178,16 +181,16 @@ class FindPet(View):
 
         #keys = search['petfinder']['pets']['pet'].keys()
         #values = search['petfinder']['pets']['pet'].values()
-        count = 0
-        for each in search['petfinder']['pets']['pet']:
-            print("NEW PET")
-            print(each.keys())
-            for x in each.values():
-                print("New info")
-                print(x.keys())
-                print(x.values())
-            count += 1
-        print(count)
+        # count = 0
+        # for each in search['petfinder']['pets']['pet']:
+        #     print("NEW PET")
+        #     print(each.keys())
+        #     for x in each.values():
+        #         print("New info")
+        #         print(x.keys())
+        #         print(x.values())
+        #     count += 1
+        # print(count)
 
         petList = search['petfinder']['pets']['pet']
         name,animal,age,sex,size,breed,shelterName,location = [],[],[],[],[],[],[],[]
@@ -196,8 +199,21 @@ class FindPet(View):
             name.append(petList[i]['name']['$t'])
             animal.append(petList[i]['animal']['$t'])
             age.append(petList[i]['age']['$t'])
-            sex.append(petList[i]['sex']['$t'])
-            size.append(petList[i]['size']['$t'])
+
+            if petList[i]['sex']['$t'] == 'M':
+                sex.append('Male')
+            elif petList[i]['sex']['$t'] == 'F':
+                sex.append('Female')
+
+            if petList[i]['size']['$t'] == 'S':
+                size.append('Small')
+            elif petList[i]['size']['$t'] == 'M':
+                size.append('Medium')
+            elif petList[i]['size']['$t'] == 'L':
+                size.append('Large')
+            elif petList[i]['size']['$t'] == 'XL':
+                size.append('Extra-Large')
+
 
             if type(petList[i]['breeds']['breed']) == type(petList):
                 bred = []
@@ -206,22 +222,28 @@ class FindPet(View):
                 breed.append(bred)
 
             elif type(petList[i]['breeds']['breed']) == type(search):
-                breed.append((petList[i]['breeds']['breed']['$t']))
+                breed.append([petList[i]['breeds']['breed']['$t']])
 
             location.append([petList[i]['contact']['city']['$t'],petList[i]['contact']['state']['$t']])
-            print(name[i],"|",animal[i],"|",age[i],"|",sex[i],"|",size[i],"|",breed[i],"|",location[i])
-            print("")
-        """
-        searchFiltered = {}
-        for i in range(len(petList)):
-            searchFiltered.append(["Name: ",name[i],"\n Animal: ",animal[i],"\n Age: ",age[i],"\n Sex: ",sex[i],"\n Size: ",size[i],"\n Breed(s): ",breed[i],"\n Location: ",location[i],"\n"])
 
-        print(searchFiltered)
+            print(name[i],"|",animal[i],"|",age[i],"|",sex[i],"|",size[i],"|",breed[i][:],"|",location[i][0],",",location[i][1])
+            print("")
+
+        searchFiltered= {}
+        searchFiltered['petfinder'] = {}
+        for i in range(len(petList)):
+            searchFiltered['petfinder'][name[i]] = [name[i]," Animal: "+animal[i]," Age: "+age[i]," Sex: "+sex[i]," Size: "+size[i]," Breed: "+"/".join(breed[i])," Location: "+location[i][0]+", "+location[i][1]]
+        searchFiltered['petfinderItems'] = list(searchFiltered['petfinder'].items())
+        searchFiltered['petfinderKeys'] = list(searchFiltered['petfinder'].keys())
+        searchFiltered['petfinderValues'] = list(searchFiltered['petfinder'].values())
+        #print(searchFiltered)
+
+
             #shelterQuery = "http://api.petfinder.com/shelter.get?key=" + settings.SECRET_KEYpetList['shelterId']['$t']
 
 
 
-        """
+
 
         #print(list(values))
         #for key,value in search.items():
@@ -234,8 +256,8 @@ class FindPet(View):
         # request.POST
         # print(request.POST)
 
-        return render(request, self.template, search)
-
+        return render(request, self.template, searchFiltered)
+"""
 class SearchFilter(View):
 
     template = "app/search.html"
@@ -308,3 +330,53 @@ class SearchFilter(View):
 
         print('&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&')
         return render(request, self.template)
+        """
+
+class FindShelter(View):
+    template = "app/search.html"
+    def get(self, request, pk = None):
+        return render(request, self.template)
+    def post(self, request):
+        location = request.POST.get('location')
+        name = request.POST.get('name')
+
+        query = "http://api.petfinder.com/shelter.find?key=" + settings.SECRET_KEY + "&location=" + location + "&name=" + name + "&format=json"
+        search = requests.get(query).json()
+        count = 0
+        for each in search['petfinder']['shelters']['shelter']:
+            print("New Shelter")
+            print(each.keys())
+            for x in each.values():
+                print("New info")
+                print(x.keys())
+                print(x.values())
+            count += 1
+        print(count)
+        shelterList = search['petfinder']['shelters']['shelter']
+        name, location , email , phone, = [], [], [], []
+        # ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+        for i in range(len(shelterList)):
+            name.append(shelterList[i]['name']['$t'])
+            if '$t' not in list(shelterList[i]['address1'].keys()):
+                location.append(['', shelterList[i]['city']['$t'], shelterList[i]['state']['$t'],shelterList[i]['zip']['$t']])
+            else:
+                location.append([shelterList[i]['address1']['$t'], shelterList[i]['city']['$t'], shelterList[i]['state']['$t'],shelterList[i]['zip']['$t']])
+
+            if '$t' not in list(shelterList[i]['phone'].keys()):
+                phone.append('')
+            else:
+                phone.append(shelterList[i]['phone']['$t'])
+
+            email.append(shelterList[i]['email']['$t'])
+
+            print(name[i],"|",location[i][0]+","+location[i][1]+","+location[i][2],"|",email[i],"|",phone[i])
+            print("")
+
+        # shelterFiltered = {}
+        # shelterFiltered['petfinder'] = {}
+        # for i in range(len(shelterList)):
+        #     shelterFiltered['petfinder'][name[i]] = name[i], address1[i], city[i], state[i], email[i], phone[i], location[i][0], location[i][1]
+        # print(shelterFiltered)
+
+        # ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+        return render(request, self.template, search)
