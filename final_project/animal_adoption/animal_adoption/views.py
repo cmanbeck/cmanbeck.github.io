@@ -175,17 +175,6 @@ class FindPet(View):
         query = "http://api.petfinder.com/pet.find?key=" + settings.SECRET_KEY + "&location=" + location + "&animal=" + animal + "&breed=" + breed + "&sex=" + sex + "&size=" + size + "&age=" + age + "&format=json"
         search = requests.get(query).json()
 
-        count = 0
-        for each in search['petfinder']['pets']['pet']:
-            print("NEW PET")
-            print(each.keys())
-            for x in each.values():
-                print("New info")
-                print(x.keys())
-                print(x.values())
-            count += 1
-        print(count)
-
         petList = search['petfinder']['pets']['pet']
         name,animal,age,sex,size,breed,shelterName,location = [],[],[],[],[],[],[],[]
 
@@ -193,8 +182,21 @@ class FindPet(View):
             name.append(petList[i]['name']['$t'])
             animal.append(petList[i]['animal']['$t'])
             age.append(petList[i]['age']['$t'])
-            sex.append(petList[i]['sex']['$t'])
-            size.append(petList[i]['size']['$t'])
+
+            if petList[i]['sex']['$t'] == 'M':
+                sex.append('Male')
+            elif petList[i]['sex']['$t'] == 'F':
+                sex.append('Female')
+
+            if petList[i]['size']['$t'] == 'S':
+                size.append('Small')
+            elif petList[i]['size']['$t'] == 'M':
+                size.append('Medium')
+            elif petList[i]['size']['$t'] == 'L':
+                size.append('Large')
+            elif petList[i]['size']['$t'] == 'XL':
+                size.append('Extra-Large')
+
 
             if type(petList[i]['breeds']['breed']) == type(petList):
                 bred = []
@@ -210,11 +212,13 @@ class FindPet(View):
             print(name[i],"|",animal[i],"|",age[i],"|",sex[i],"|",size[i],"|",breed[i][:],"|",location[i][0],",",location[i][1])
             print("")
 
-        searchFiltered = {}
+        searchFiltered= {}
         searchFiltered['petfinder'] = {}
         for i in range(len(petList)):
-            searchFiltered['petfinder'][name[i]] = animal[i],age[i],sex[i],size[i],breed[i][:],location[i][0],location[i][1]
-        print(searchFiltered)
+            searchFiltered['petfinder'][name[i]] = [name[i]," Animal: "+animal[i]," Age: "+age[i]," Sex: "+sex[i]," Size: "+size[i]," Breed: "+"/".join(breed[i])," Location: "+location[i][0]+", "+location[i][1]]
+        searchFiltered['petfinderItems'] = list(searchFiltered['petfinder'].items())
+        searchFiltered['petfinderKeys'] = list(searchFiltered['petfinder'].keys())
+        searchFiltered['petfinderValues'] = list(searchFiltered['petfinder'].values())
 
         return render(request, self.template, searchFiltered)
 
