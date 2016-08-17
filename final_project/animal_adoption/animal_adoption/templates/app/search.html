@@ -8,8 +8,15 @@
 	{% extends 'app/base.html' %}
 	{% block content %}
 
-		{{ petfinder }}
 
+		{% for value in petfinderValues %}
+			{% for info in value %}
+				{{info}}
+				<br>
+			{% endfor %}
+			<br>
+			<br>
+		{% endfor %}
 
 
 	{% endblock %}
