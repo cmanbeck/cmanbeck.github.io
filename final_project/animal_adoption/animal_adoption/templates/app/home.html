@@ -74,8 +74,9 @@
 			<input type="submit" value = "Search">
 			</form>
 
-
 	    </article>
+
+	    
 
 		<article class = "featured">
 		<p>Featured pets here</p>
@@ -88,7 +89,22 @@
 
 
     <aside class = "aside-1">
-		<p>Quiz</p>
+    	<p>Shelter search function here</p>
+		<article class = "shelter-search">
+
+	    	<form action = "{% url 'animal_adoption:find_shelter' %}" method = "POST">
+				{% csrf_token %}
+
+				<h1>Location</h1>
+				<input type = 'text' name = 'location' placeholder="Search by ZIP code or city">
+
+				<h1>Name</h1>
+				<input type = 'text' name = 'name' placeholder="Name of the shelter">
+				<input type = 'submit' value = 'search'>
+
+			</form>
+
+		</article>
     </aside>
 
     <aside class = "aside-2">

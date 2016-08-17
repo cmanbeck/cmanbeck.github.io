@@ -174,6 +174,7 @@ class FindPet(View):
         sex = request.POST.get('sex')
         size = request.POST.get('size')
         age = request.POST.get('age')
+<<<<<<< HEAD
 
         query = "http://api.petfinder.com/pet.find?key=" + settings.SECRET_KEY + "&location=" + location + "&animal=" + animal + "&breed=" + breed + "&sex=" + sex + "&size=" + size + "&age=" + age + "&format=json"
         search = requests.get(query).json()
@@ -345,6 +346,77 @@ class FindShelter(View):
         count = 0
         for each in search['petfinder']['shelters']['shelter']:
             print("New Shelter")
+=======
+
+        query = "http://api.petfinder.com/pet.find?key=" + settings.SECRET_KEY + "&location=" + location + "&animal=" + animal + "&breed=" + breed + "&sex=" + sex + "&size=" + size + "&age=" + age + "&format=json"
+        search = requests.get(query).json()
+
+        petList = search['petfinder']['pets']['pet']
+        name,animal,age,sex,size,breed,shelterName,location = [],[],[],[],[],[],[],[]
+
+        for i in range(len(petList)):
+            name.append(petList[i]['name']['$t'])
+            animal.append(petList[i]['animal']['$t'])
+            age.append(petList[i]['age']['$t'])
+
+            if petList[i]['sex']['$t'] == 'M':
+                sex.append('Male')
+            elif petList[i]['sex']['$t'] == 'F':
+                sex.append('Female')
+
+            if petList[i]['size']['$t'] == 'S':
+                size.append('Small')
+            elif petList[i]['size']['$t'] == 'M':
+                size.append('Medium')
+            elif petList[i]['size']['$t'] == 'L':
+                size.append('Large')
+            elif petList[i]['size']['$t'] == 'XL':
+                size.append('Extra-Large')
+
+
+            if type(petList[i]['breeds']['breed']) == type(petList):
+                bred = []
+                for each in petList[i]['breeds']['breed']:
+                    bred.append(each['$t'])
+                breed.append(bred)
+
+            elif type(petList[i]['breeds']['breed']) == type(search):
+                breed.append([petList[i]['breeds']['breed']['$t']])
+
+            location.append([petList[i]['contact']['city']['$t'],petList[i]['contact']['state']['$t']])
+
+            print(name[i],"|",animal[i],"|",age[i],"|",sex[i],"|",size[i],"|",breed[i][:],"|",location[i][0],",",location[i][1])
+            print("")
+
+        searchFiltered= {}
+        searchFiltered['petfinder'] = {}
+        for i in range(len(petList)):
+            searchFiltered['petfinder'][name[i]] = [name[i]," Animal: "+animal[i]," Age: "+age[i]," Sex: "+sex[i]," Size: "+size[i]," Breed: "+"/".join(breed[i])," Location: "+location[i][0]+", "+location[i][1]]
+        searchFiltered['petfinderItems'] = list(searchFiltered['petfinder'].items())
+        searchFiltered['petfinderKeys'] = list(searchFiltered['petfinder'].keys())
+        searchFiltered['petfinderValues'] = list(searchFiltered['petfinder'].values())
+
+        return render(request, self.template, searchFiltered)
+
+class FindShelter(View):
+
+    template = "app/search.html"
+
+
+    def get(self, request, pk = None):
+        return render(request, self.template)
+
+    def post(self, request):
+        location = request.POST.get('location')
+        name = request.POST.get('name')
+        
+        query = "http://api.petfinder.com/shelter.find?key=" + settings.SECRET_KEY + "&location=" + location + "&name=" + name + "&format=json"
+        search = requests.get(query).json()
+
+        count = 0
+        for each in search['petfinder']['shelters']['shelter']:
+            print("##################################################")
+>>>>>>> courtney
             print(each.keys())
             for x in each.values():
                 print("New info")
@@ -352,6 +424,7 @@ class FindShelter(View):
                 print(x.values())
             count += 1
         print(count)
+<<<<<<< HEAD
         shelterList = search['petfinder']['shelters']['shelter']
         name, location , email , phone, = [], [], [], []
         # ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
@@ -380,3 +453,30 @@ class FindShelter(View):
 
         # ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
         return render(request, self.template, search)
+=======
+
+        shelterList = search['petfinder']['shelters']['shelter']
+        name, location = [], []
+
+        # ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+        for i in range(len(shelterList)):
+            name.append(shelterList[i]['name']['$t'])
+            location.append([shelterList[i]['address1']['$t'], shelterList[i]['city']['$t'], shelterList[i]['state']['$t']])
+
+            print(address1[i],"|",city[i],"|",state[i],"|",location[i][0],",",location[i][1])
+            print("")
+
+        shelterFiltered = {}
+        shelterFiltered['petfinder'] = {}
+        for i in range(len(shelterList)):
+            shelterFiltered['petfinder'][name[i]] = name[i], address1[i], city[i], state[i], location[i][0], location[i][1]
+        print(shelterFiltered)
+
+        # ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+        return render(request, self.template, search)
+
+
+
+>>>>>>> courtney
