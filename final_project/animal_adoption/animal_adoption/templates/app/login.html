@@ -15,25 +15,32 @@
 </head>
 <body>
 
-	<h3>Create an Account</h3>
+    <div class = "account">
+        <div id = "register">
+        	<h3>Create an Account</h3>
 
-	<form action="{% url 'animal_adoption:register' %}" method = "POST">
-		{% csrf_token %}
-    {{ profile_form.as_p }}
-		
-		<input type = "submit" class = "button" value = "Register"/>
-	</form>
+        	<form action="{% url 'animal_adoption:register' %}" method = "POST">
+        		{% csrf_token %}
+            {{ profile_form.as_p }}
+        		
+        		<input type = "submit" class = "button" value = "Register"/>
+        	</form>
+        </div>
 
-    <h3>Log in</h3>
+        <div id = "login">
 
-    <form method="POST" action="{% url 'animal_adoption:login' %}">
-        {% csrf_token %}
-        
-        <input type="text" placeholder="Username" name="username"/>
-        <br>
-        <input type="password" placeholder="Password" name="password"/>
-        <br>
-        <input type="submit" value = "Log In" class = "button">
-    </form>
+        <h3>Log in</h3>
+
+            <form method="POST" action="{% url 'animal_adoption:login' %}">
+                {% csrf_token %}
+                
+                <input type="text" placeholder="Username" name="username"/>
+                <br>
+                <input type="password" placeholder="Password" name="password"/>
+                <br>
+                <input type="submit" value = "Log In" class = "button">
+            </form>
+        </div>
+    </div>
 </body>
 </html>

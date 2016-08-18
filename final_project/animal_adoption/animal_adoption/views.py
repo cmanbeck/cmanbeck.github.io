@@ -306,8 +306,26 @@ class Details(View):
         return render(request, self.template)
 
     def post(self, request):
-        return render(request, self.template)
+        # pet_id = request.POST.get('id')
 
+        # hardcoding for now
+        pet_id = '35264151'
 
+        # pet.get() returns the records for a single pet, while shelter.get() does the same for a shelter
+        query = "http://api.petfinder.com/pet.get?key=" + settings.SECRET_KEY + "&id=" + pet_id + "&format=json"
+        details = requests.get(query).json()
 
+        # dictionary
+        pet_details = details['petfinder']['pet']['description']
+        print(pet_details)
 
+        detailsFiltered = {}
+        detailsFiltered['petfinder'] = {}
+        for i in range(len(pet_details)):
+            detailsFiltered['petfinder']
+
+        detailsFiltered['petfinderItems'] = list(detailsFiltered['petfinder'].items())
+        detailsFiltered['petfinderKeys'] = list(detailsFiltered['petfinder'].keys())
+        detailsFiltered['petfinderValues'] = list(detailsFiltered['petfinder'].values())
+
+        return render(request, self.template, detailsFiltered)
