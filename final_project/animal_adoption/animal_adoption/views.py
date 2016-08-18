@@ -258,20 +258,6 @@ class FindShelter(View):
         shelterList = search['petfinder']['shelters']['shelter']
         name, location , email , phone, = [], [], [], []
 
-        # count = 0
-        # for each in shelterList:
-        #     print("##################################################")
-
-        #     print(each.keys())
-        #     for x in each.values():
-        #         print(" ")
-        #         # print(x.keys())
-        #         # print(x.values())
-        #     count += 1
-        # print(count)
-
-        
-        # ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
         print(type(shelterList), '*****')
 
         # If you search by location, shelterList is a list
@@ -293,42 +279,35 @@ class FindShelter(View):
             else:
                 phone.append(shelterList[i]['phone']['$t'])
 
-            # email.append(shelterList[i]['email']['$t'])
-
             # Shelter info in the terminal
 
-            print(name[i],"|",location[i][0]+","+location[i][1]+","+location[i][2],"|",phone[i])
-            print("")
-
-        # ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-        # return render(request, self.template, search)
-
-        # shelterList = search['petfinder']['shelters']['shelter']
-        # name, location = [], []
-
-        # ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-
-        # for i in range(len(shelterList)):
-            # For every shelter in shelterList, write the name and location (address, city, state)
-            # name.append(shelterList[i]['name']['$t'])
-            # location.append([shelterList[i]['address1']['$t'],
-            # shelterList[i]['city']['$t'],
-            # shelterList[i]['state']['$t']])
-
-            # print(address1[i],"|",city[i],"|",state[i],"|",location[i][0],",",location[i][1])
+            # print(name[i],"|",location[i][0]+","+location[i][1]+","+location[i][2],"|",phone[i])
             # print("")
 
         shelterFiltered = {}
         shelterFiltered['petfinder'] = {}
         for i in range(len(shelterList)):
-            # shelterFiltered['petfinder'][name[i]] = name[i], address1[i], city[i], state[i], location[i][0], location[i][1]
             shelterFiltered['petfinder'][name[i]] = [name[i],
             location[i][0]+", "+location[i][1]]
         shelterFiltered['petfinderItems'] = list(shelterFiltered['petfinder'].items())
         shelterFiltered['petfinderKeys'] = list(shelterFiltered['petfinder'].keys())
         shelterFiltered['petfinderValues'] = list(shelterFiltered['petfinder'].values())
-        print(shelterFiltered)
+        # print(shelterFiltered)
 
-        # ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+        
         # end post function
         return render(request, self.template, shelterFiltered)
+
+class Details(View):
+
+    template = "app/details.html"
+
+    def get(self, request, pk = None):
+        return render(request, self.template)
+
+    def post(self, request):
+        return render(request, self.template)
+
+
+
+

@@ -83,3 +83,14 @@ h1, h2, h3, h4 {
     width: 1100px;
 }
 
+#search-info {
+    font-size: 14px;
+    border-color: #68D265;
+    border-style: solid;
+    border-radius: 5px;
+    height: 500px;
+    width: 400px;
+    display: inline-block;
+    background-color: white;
+}
+
