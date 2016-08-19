@@ -17,10 +17,10 @@
 					<br>
 
 				{% endfor %}
-				<form action = "{% url 'animal_adoption:details' %}" method = "POST">
+				<form action = "{% url 'animal_adoption:details' %}?id={{value.ID}}" method = "POST">
 						{% csrf_token %}
 						<input type = "submit" value = "Details">
-					</form>
+				</form>
 				
 				<br>
 				<br>
