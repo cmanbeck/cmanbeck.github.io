@@ -1,11 +1,18 @@
 body {
-	background-color: #FFFFFF;
+	background-color: #E4F7E3;
 
 }
+
+/*.title-header {
+    background-color: white;
+    height: 100%;
+}*/
 
 .title {
     font-size: 40px;
     margin: 20px;
+    color: #68D265;
+    /*background-color: white;*/
 }
 
 .page-header {
@@ -84,6 +91,8 @@ h1, h2, h3, h4 {
 }
 
 #search-info {
+    margin-left: 55px;
+    margin-top: 40px;
     font-size: 14px;
     border-color: #68D265;
     border-style: solid;
@@ -94,3 +103,33 @@ h1, h2, h3, h4 {
     background-color: white;
 }
 
+.pet-photo {
+    margin-left: 60px;
+    width: 70%;
+    height: 60%;
+    border-radius: 5px;
+}
+
+.pet-info {
+    padding-top: 5px;
+    margin-left: 60px;
+    color: black;
+}
+
+input[type=submit] {
+    width: 70%;
+    height:100%;
+    background-color: #68D265;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    margin-left: 60px;
+    -webkit-transition-duration: 0.4s;
+    transition-duration: 0.4s;
+    cursor: pointer;
+}
+
+input[type=submit]:hover{
+    background-color: #4CAF50;
+    color: white;
+}

@@ -1,17 +1,37 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-	<meta charset="UTF-8">
-	<title>Details</title>
+  <meta charset="UTF-8">
+  <title>Details</title>
+
 </head>
 <body>
 {% extends 'app/base.html' %}
 {% block content %}
 
-	{{ petfinder }}
+{{petName}}
+<br>
+<img class="pet-description-photo" src ={{petBigPhoto}} alt="Big Photo">
+<br>
+{% for info in petInformation %}
+		{{info}}
+		<br>
+{% endfor %}
 
+<br>
+{{petDescription}}
+<br><br>
+<!-- <p> Shelter Information </p> -->
+{% for info in shelterInformation %}
+	{{info}}
+	<br>
+{% endfor %}
+<br>
+{% for each in morePhotos %}
+	<img class="pet-description-photo" src ={{each}} alt="Small Photo">
+{% endfor %}
 
 {% endblock %}
-	
+
 </body>
 </html>

@@ -180,13 +180,46 @@ class FindPet(View):
         search = requests.get(query).json()
 
         petList = search['petfinder']['pets']['pet']
-        name,animal,age,sex,size,breed,shelterName,location,ID = [],[],[],[],[],[],[],[],[]
+        name,animal,age,sex,size,breed,shelterName,location,ID,photos = [],[],[],[],[],[],[],[],[],[]
 
         for i in range(len(petList)):
             name.append(petList[i]['name']['$t'])
             animal.append(petList[i]['animal']['$t'])
             age.append(petList[i]['age']['$t'])
             ID.append(petList[i]['id']['$t'])
+
+            if 'photos' in petList[i]['media'].keys():
+                for each in petList[i]['media']['photos']['photo']:
+                    #print(each.keys())
+                    if each['@size'] == 'pn':
+                        photos.append(each['$t'])
+                        break
+                try:
+                    photos[i]
+                except IndexError:
+                    for each in petList[i]['media']['photos']['photo']:
+                        if each['@size'] == 'x':
+                            photos.append(each['$t'])
+                            break
+
+                try:
+                    photos[i]
+                except IndexError:
+                    photos.append('http://www.jackspets.com/Images/Pet-Care-Information/Pet-Care-Information.png')
+                #print(photos[i])
+                # print("")
+                # print("")
+
+            else:
+                photos.append("http://reddeerspca.com/images/content/nophoto.jpg")
+            print(photos[i])
+            print("")
+            print('')
+
+
+
+
+
 
             if petList[i]['sex']['$t'] == 'M':
                 sex.append('Male')
@@ -225,13 +258,14 @@ class FindPet(View):
             #print(sex)
             searchFiltered['petfinder'][name[i]] = {}
             searchFiltered['petfinder'][name[i]]['info'] = [name[i],
-            " Animal: "+animal[i],
+            # " Animal: "+animal[i],
+            photos[i],
+            " Breed: "+"/".join(breed[i]),
             " Age: "+ age[i],
             " Sex: "+ sex[i],
             " Size: "+ size[i],
-            " Breed: "+"/".join(breed[i]),
-            " ID: "+ ID[i],
             " Location: "+location[i][0]+", "+location[i][1]]
+            
 
             searchFiltered['petfinder'][name[i]]['ID'] = ID[i]
         searchFiltered['petfinderItems'] = list(searchFiltered['petfinder'].items())
@@ -314,6 +348,7 @@ class FindShelter(View):
         # end post function
         return render(request, self.template, shelterFiltered)
 
+
 class Details(View):
 
     template = "app/details.html"
@@ -324,24 +359,214 @@ class Details(View):
     def post(self, request):
         pet_id = request.GET.get('ID')
 
-        # pet.get() returns the records for a single pet, while shelter.get() does the same for a shelter
-        print(pet_id)
         query = "http://api.petfinder.com/pet.get?key=" + settings.SECRET_KEY + "&id=" + pet_id + "&format=json"
         details = requests.get(query).json()
 
         # dictionary
         pet_details = details['petfinder']['pet']['description']
-        print(pet_details)
-
+        pet = details['petfinder']['pet']
+        #print(pet_details)
         detailsFiltered = {}
         detailsFiltered['petfinder'] = {}
+        #Description
         if '$t' not in pet_details.keys():
-            detailsFiltered['description'] = "No description available."
+            description = "No description available."
         else:
-            detailsFiltered['description'] = pet_details['$t']
+            description = pet_details['$t']
+
+        #Photo
+        if 'photos' in pet['media'].keys():
+            photos = []
+            for each in pet['media']['photos']['photo']:
+                if each['@size'] == 'pn':
+                    photos.append(each['$t'])
+            for each in pet['media']['photos']['photo']:
+                #print(each.keys())
+                if each['@size'] == 'pn':
+                    photo = each['$t']
+                    break
+            try:
+                photo
+            except NameError:
+                for each in pet['media']['photos']['photo']:
+                    if each['@size'] == 'x':
+                        photo = each['$t']
+                        break
+
+            try:
+                photo
+            except NameError:
+                photo ='http://www.jackspets.com/Images/Pet-Care-Information/Pet-Care-Information.png'
+            #print(photos[i])
+            # print("")
+            # print("")
+
+        if photo in photos:
+            photos.remove(photo)
+
+
+        else:
+            photo = "http://reddeerspca.com/images/content/nophoto.jpg"
+
+        #Name,Animal,Breed,Sex,Age,Size,ShelterName,Address
+        name = pet['name']['$t']
+        animal = pet['animal']['$t']
+        age= pet['age']['$t']
+
+        if pet['status']['$t'] == 'A':
+            status = 'Adoptable'
+        elif pet['status']['$t'] == 'H':
+            status = 'On hold'
+        elif pet['status']['$t'] == 'P':
+            status = 'Pending'
+        elif pet['status']['$t'] == 'X':
+            status = 'Adopted/Removed'
+
+
+
+        if 'option' in pet['options'].keys():
+            print(pet['options']['option'])
+            options = []
+
+            if type(pet['options']['option']) == type(details):
+                if pet['options']['option']['$t'] == 'hasShots':
+                    options.append('Has shots')
+                elif pet['options']['option']['$t'] == 'altered':
+                    options.append('Spayed/Neutered')
+                elif pet['options']['option']['$t'] == 'noCats':
+                    options.append('No cats')
+                elif pet['options']['option']['$t'] == 'housetrained':
+                    options.append('Housetrained')
+                elif pet['options']['option']['$t'] == 'specialNeeds':
+                    options.append('Housetrained')
+                elif pet['options']['option']['$t'] == 'noDogs':
+                    options.append('No dogs')
+                elif pet['options']['option']['$t'] == 'noClaws':
+                    options.append('Declawed')
+
+            elif type(pet['options']['option']) == type([]):
+                for each in pet['options']['option']:
+                    if each['$t'] == 'hasShots':
+                        options.append('Has shots')
+                    elif each['$t'] == 'altered':
+                        options.append('Spayed/Neutered')
+                    elif each['$t'] == 'noCats':
+                        options.append('No cats')
+                    elif each['$t'] == 'housetrained':
+                        options.append('Housetrained')
+                    elif each['$t'] == 'specialNeeds':
+                        options.append('Special needs')
+                    elif each['$t'] == 'noDogs':
+                        options.append('No dogs')
+                    elif each['$t'] == 'noClaws':
+                        options.append('Declawed')
+
+            options = " | ".join(options)
+            print(options)
+
+
+
+        shelterID = pet['shelterId']['$t']
+        shelterQuery = "http://api.petfinder.com/shelter.get?key=" + settings.SECRET_KEY + "&id=" + shelterID + "&format=json"
+        shelter = requests.get(shelterQuery).json()
+        #print(shelter['petfinder']['shelter'])
+        shelter = shelter['petfinder']['shelter']
+        print("")
+        print("")
+
+        shelterName = shelter['name']['$t']
+        if '$t' not in shelter['address1'].keys():
+            address1 = ''
+        else:
+            address1 = shelter['address1']['$t']+", "
+
+        if '$t' not in shelter['address2'].keys():
+            address2 = ''
+        else:
+            address2 = shelter['address2']['$t']+", "
+
+        if '$t' not in shelter['fax'].keys():
+            fax = ''
+        else:
+            fax = shelter['fax']['$t']
+
+        if '$t' not in shelter['email'].keys():
+            email = 'None'
+        else:
+            email = shelter['email']['$t']
+
+        if '$t' not in shelter['phone'].keys():
+            phone = ''
+        else:
+            phone = shelter['phone']['$t']
+
+        if '$t' not in shelter['zip'].keys():
+            zipcode = ''
+        else:
+            zipcode = shelter['zip']['$t']
+
+        if '$t' not in shelter['city'].keys():
+            city = ''
+        else:
+            city = shelter['city']['$t']+", "
+
+        state = shelter['state']['$t']+" "
+
+        shelterLocation1 = "".join([address1,city,state,zipcode])
+        print(shelterLocation1)
+
+        if pet['sex']['$t'] == 'M':
+            sex='Male'
+        elif pet['sex']['$t'] == 'F':
+            sex='Female'
+        else:
+            sex='Unknown'
+
+        if pet['size']['$t'] == 'S':
+            size='Small'
+        elif pet['size']['$t'] == 'M':
+            size='Medium'
+        elif pet['size']['$t'] == 'L':
+            size='Large'
+        elif pet['size']['$t'] == 'XL':
+            size='Extra-Large'
+
+        if type(pet['breeds']['breed']) == type([]):
+            breed = []
+            for each in pet['breeds']['breed']:
+                breed.append(each['$t'])
+
+        elif type(pet['breeds']['breed']) == type(details):
+            breed=[pet['breeds']['breed']['$t']]
+
+        breed = "/".join(breed)
+        #Defining Context
+        detailsFiltered['petfinder']['petInformation'] = [
+        "Animal: "+animal,
+        "Breed: "+breed,
+        "Sex: " +sex,
+        "Age: "+age,
+        options,
+        "Status: "+status]
+
+        detailsFiltered['petfinder']['petDescription'] = description
+        detailsFiltered['petfinder']['petName'] = name
+
+        if phone != '':
+            detailsFiltered['petfinder']['shelterInformation'] = [shelterName,
+            shelterLocation1,
+            "Email: "+email,
+            "Phone: "+phone]
+        else:
+            detailsFiltered['petfinder']['shelterInformation'] = [shelterName,
+            shelterLocation1,
+            "Email: "+email]
+
+        detailsFiltered['petfinder']['petBigPhoto'] = photo
+        detailsFiltered['petfinder']['morePhotos'] = photos
 
         detailsFiltered['petfinderItems'] = list(detailsFiltered['petfinder'].items())
         detailsFiltered['petfinderKeys'] = list(detailsFiltered['petfinder'].keys())
         detailsFiltered['petfinderValues'] = list(detailsFiltered['petfinder'].values())
 
-        return render(request, self.template, detailsFiltered)
+        return render(request, self.template, detailsFiltered['petfinder'])
