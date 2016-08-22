@@ -174,22 +174,13 @@ class FindPet(View):
         sex = request.POST.get('sex')
         size = request.POST.get('size')
         age = request.POST.get('age')
-        
+
 
         query = "http://api.petfinder.com/pet.find?key=" + settings.SECRET_KEY + "&location=" + location + "&animal=" + animal + "&breed=" + breed + "&sex=" + sex + "&size=" + size + "&age=" + age + "&format=json"
         search = requests.get(query).json()
 
-
-        if 'pets' not in list(search['petfinder'].keys()):
-            return HttpResponse("There seems to have been an error.")
-        elif 'pets' in list(search['petfinder'].keys()):
-            if 'pet' not in list(search['petfinder']['pets'].keys()):
-                return HttpResponse("No pets found. Please try again.")
-            elif 'pet' in list(search['petfinder']['pets'].keys()):
-                petList = search['petfinder']['pets']['pet']
-
-        # petList = search['petfinder']['pets']['pet']
-        name,animal,age,sex,size,breed,shelterName,location, ID = [],[],[],[],[],[],[],[], []
+        petList = search['petfinder']['pets']['pet']
+        name,animal,age,sex,size,breed,shelterName,location,ID = [],[],[],[],[],[],[],[],[]
 
         for i in range(len(petList)):
             name.append(petList[i]['name']['$t'])
@@ -231,17 +222,22 @@ class FindPet(View):
         searchFiltered= {}
         searchFiltered['petfinder'] = {}
         for i in range(len(petList)):
-            searchFiltered['petfinder'][name[i]] = [name[i],
+            #print(sex)
+            searchFiltered['petfinder'][name[i]] = {}
+            searchFiltered['petfinder'][name[i]]['info'] = [name[i],
             " Animal: "+animal[i],
             " Age: "+ age[i],
             " Sex: "+ sex[i],
             " Size: "+ size[i],
             " Breed: "+"/".join(breed[i]),
+            " ID: "+ ID[i],
             " Location: "+location[i][0]+", "+location[i][1]]
+
             searchFiltered['petfinder'][name[i]]['ID'] = ID[i]
         searchFiltered['petfinderItems'] = list(searchFiltered['petfinder'].items())
         searchFiltered['petfinderKeys'] = list(searchFiltered['petfinder'].keys())
         searchFiltered['petfinderValues'] = list(searchFiltered['petfinder'].values())
+        searchFiltered['petIDs'] = ID
 
         return render(request, self.template, searchFiltered)
 
@@ -328,10 +324,8 @@ class Details(View):
     def post(self, request):
         pet_id = request.GET.get('ID')
 
-        # hardcoding for now
-        # pet_id = '35264151'
-
         # pet.get() returns the records for a single pet, while shelter.get() does the same for a shelter
+        print(pet_id)
         query = "http://api.petfinder.com/pet.get?key=" + settings.SECRET_KEY + "&id=" + pet_id + "&format=json"
         details = requests.get(query).json()
 
@@ -341,8 +335,10 @@ class Details(View):
 
         detailsFiltered = {}
         detailsFiltered['petfinder'] = {}
-        for i in range(len(pet_details)):
-            detailsFiltered['petfinder']
+        if '$t' not in pet_details.keys():
+            detailsFiltered['description'] = "No description available."
+        else:
+            detailsFiltered['description'] = pet_details['$t']
 
         detailsFiltered['petfinderItems'] = list(detailsFiltered['petfinder'].items())
         detailsFiltered['petfinderKeys'] = list(detailsFiltered['petfinder'].keys())
