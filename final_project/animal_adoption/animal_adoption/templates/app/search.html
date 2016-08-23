@@ -8,7 +8,6 @@
 	{% extends 'app/base.html' %}
 	{% block content %}
 
-
 		{% for value in petfinderValues %}
 
 			<div id = "search-info">
@@ -22,9 +21,9 @@
 					<!-- <br> -->
 
 				{% endfor %}
-				<form action = "{% url 'animal_adoption:details' %}?ID={{value.ID}}" method = "POST" class = "input[type=submit]">
+				<form action = "{% url 'animal_adoption:details' %}?ID={{value.ID}}" method = "POST">
 						{% csrf_token %}
-						<input type = "submit" value = "Details">
+						<input type = "submit" value = "Details" class = "button1">
 					</form>
 
 				<br>

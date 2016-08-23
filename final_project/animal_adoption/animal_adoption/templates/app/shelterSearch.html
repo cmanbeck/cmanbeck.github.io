@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>Find Pet</title>
+</head>
+<body>
+	{% extends 'app/base.html' %}
+	{% block content %}
+
+
+		{% for value in petfinderValues %}
+
+			<div id = "shelter-search-info">
+				{% for info in value %}
+					{% if info != '' %}
+						{% if 'mailto:' in info.1 %}
+						<div class = "pet-info">
+						{{info.0}}
+					  <a href={{info.1}} target="_blank">{{info.2}}</a>
+						</div>
+						{% else %}
+						<div class = "pet-info">{{info}}</div>
+						{% endif %}
+					{% endif %}
+				{% endfor %}
+				
+				<br>
+				<br>
+			</div>
+
+		{% endfor %}
+
+
+
+	{% endblock %}
+</body>
+</html>

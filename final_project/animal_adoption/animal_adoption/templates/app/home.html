@@ -17,18 +17,20 @@
 {% extends 'app/base.html' %}
 {% block content %}
 
-	{{ petfinder }}
+	<!-- {{ petfinder }} -->
 
 	<div class = "search-div">
 		<article class = "search">
-	    	<p>Search function here</p>
+	    	<!-- <p>Search function here</p> -->
 
 	    	<form action = "{% url 'animal_adoption:find_pet' %}" method = "POST">
 			{% csrf_token %}
+			<div class = "search-options">
+				<h1>Location</h1>
+				<input name = "location" type = "text" placeholder="Search by ZIP code or city">
+			</div>
 
-			<h1>Location</h1>
-			<input name = "location" type = "text" placeholder="Search by ZIP code or city">
-
+			<div class = "search-options">
 			<h1>Animal</h1>
 			<select name = "animal">
 			  <option value="">Any</option>
@@ -41,17 +43,23 @@
 			  <option value="reptile">Reptile</option>
 			  <option value="smallfurry">Small Mammal</option>
 			</select>
-
+			</div>
+			
+			<div class = "search-options">
 			<h1>Breed</h1>
 			<input name = "breed" type = "text" placeholder="Enter a breed">
+			</div>
 
+			<div class = "search-options">
 			<h1>Sex</h1>
 			<select name = "sex">
 			  <option value="">Any</option>
 			  <option value="M">Male</option>
 			  <option value="F">Female</option>
 			</select>
+			</div>
 
+			<div class = "search-options">
 			<h1>Size</h1>
 				<select name = "size">
 				  <option value="">Any</option>
@@ -60,7 +68,9 @@
 				  <option value="L">Large</option>
 				  <option value="XL">Extra-Large</option>
 				</select>
-
+			</div>
+			
+			<div class = "search-options">
 			<h1>Age</h1>
 				<select name = "age">
 				  <option value="">Any</option>
@@ -69,51 +79,100 @@
 				  <option value="Adult">Adult</option>
 				  <option value="Senior">Senior</option>
 				</select>
+			</div>
 
-
-			<input type="submit" value = "Search">
+			<input type="submit" value = "Search" class = "search-button">
 			</form>
 
 	    </article>
 
-	    
+	</div>
 
-		<article class = "featured">
-		<p>Featured pets here</p>
-		            <SCRIPT src="https://fpm.petfinder.com/js/fpmstyle.js"></SCRIPT>
-            <SCRIPT src="https://fpm.petfinder.com/fp/petfeed.cgi?lang=json&callback=fpm1&state=&shelter=&animal=&age=&ref=123123412asdgfasdfg234qlgkhj1p928y4"></SCRIPT>
-
-    	</article>
-
-    </div>
-
-
-    <aside class = "aside-1">
-    	<p>Shelter search function here</p>
+	<aside class = "aside-1">
+    	<!-- <p>Shelter search function here</p> -->
 		<article class = "shelter-search">
 
 	    	<form action = "{% url 'animal_adoption:find_shelter' %}" method = "POST">
 				{% csrf_token %}
-
-				<h1>Location</h1>
-				<input type = 'text' name = 'location' placeholder="Search by ZIP code or city">
-
-				<h1>Name</h1>
-				<input type = 'text' name = 'name' placeholder="Name of the shelter">
-				<input type = 'submit' value = 'Search'>
-
+				<br>
+				<!-- <br> -->
+				<div class = "shelter-search-text">
+					<h1>Location</h1>
+					<input type = 'text' name = 'location' placeholder="Search by ZIP code or city">
+				</div>
+				<div class = "shelter-search-text">
+					<h1>Name</h1>
+					<input type = 'text' name = 'name' placeholder="Name of the shelter">
+					<input type = 'submit' value = 'Search' class = "search-button">
+				</div>
 			</form>
 
 		</article>
     </aside>
 
+    
+
+	<!-- <div class = "featured-div">
+
+			<article class = "featured-pets">
+				
+				<p>Featured pets here</p>
+		        
+			</article> -->
+
+
+		           <!--  <SCRIPT src="https://fpm.petfinder.com/js/fpmstyle.js"></SCRIPT>
+            <SCRIPT src="https://fpm.petfinder.com/fp/petfeed.cgi?lang=json&callback=fpm1&state=&shelter=&animal=&age=&ref=123123412asdgfasdfg234qlgkhj1p928y4"></SCRIPT> -->
+
+    <!-- </div> -->
+
+    <div class = "featured-div">
+		<p>Featured pets here</p>
+		{% for value in petfinderValues %}
+
+			<div id = "featured-pets">
+				{% for info in value.info %}
+					{% if "http" in info %}
+						<img class="pet-photo" src={{info}} alt="Thumbnail Picture">
+					{% else %}
+						<div class = "pet-info">{{info}}</div>
+					{% endif %}
+
+				{% endfor %}
+				<form action = "{% url 'animal_adoption:details' %}?ID={{value.ID}}" method = "POST" class = "input[type=submit]">
+						{% csrf_token %}
+						<input type = "submit" value = "Details">
+					</form>
+
+				<br>
+				<br>
+			</div>
+
+		</div>
+
+		{% endfor %}
+
+    	</article>
+
     <aside class = "aside-2">
+    	
+		<article class = "share">
+
+	   		<p>Share this page</p>
+
+		</article>
+    </aside>
+
+
+    
+
+    <!-- <aside class = "aside-2">
 		<p>Help</p>
     </aside>
 
     <aside class = "share">
 		<p>Share this page</p>
-    </aside>
+    </aside> -->
 
 
 {% endblock %}

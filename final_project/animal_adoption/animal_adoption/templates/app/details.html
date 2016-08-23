@@ -9,26 +9,50 @@
 {% extends 'app/base.html' %}
 {% block content %}
 
-{{petName}}
+<div class = "pet-name">{{petName}}</div>
 <br>
 <img class="pet-description-photo" src ={{petBigPhoto}} alt="Big Photo">
 <br>
-{% for info in petInformation %}
-		{{info}}
-		<br>
-{% endfor %}
+
+<div class = "basic-pet">
+  {% for info in petInformation %}
+      {% if info != '' %}
+        {{info}}
+          <br>
+      {% endif %}
+  {% endfor %}
+</div>
 
 <br>
-{{petDescription}}
+<div class = 'pet-description'>
+  {% for word in petDescription %}
+    {% if 'http' in word %}
+      <a href={{word}} target="_blank">{{word}}</a>
+    {% elif 'mailto:' in word.0 %}
+      <a href={{word.0}} target="_blank">{{word.1}}</a>
+    {% else %}
+      {{word}}
+    {% endif %}
+  {% endfor %}
+</div>
 <br><br>
 <!-- <p> Shelter Information </p> -->
-{% for info in shelterInformation %}
-	{{info}}
-	<br>
-{% endfor %}
+
+<div class = "shelter-description"
+  {% for info in shelterInformation %}
+    {% if 'mailto:' in info.1 %}
+      {{info.0}}
+      <a href={{info.1}} target="_blank">{{info.2}}</a>
+    {% else %}
+     {{info}}
+    {% endif %}
+    <br>
+  {% endfor %}
+</div>
+
 <br>
 {% for each in morePhotos %}
-	<img class="pet-description-photo" src ={{each}} alt="Small Photo">
+  <img class="pet-description-photo" src ={{each}} alt="Small Photo">
 {% endfor %}
 
 {% endblock %}
