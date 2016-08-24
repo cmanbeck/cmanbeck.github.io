@@ -101,11 +101,17 @@ h1, h2, h3, h4 {
 }
 
 .featured-pets {
+    display: inline-block;
     background-color: white;
-    height: 92%;
-    width: 97%;
+    height: 30%;
+    width: 30%;
     margin: auto;
     margin-top: 1.8%;
+}
+
+#featured-pet-photo{
+    width: 60%;
+    height: 70%;
 }
 
 .aside-1 {
