@@ -148,6 +148,7 @@ class APISample(View):
     template = "app/home.html"
 
     def get(self, request, pk= None):
+        
         barnyardQuery = "http://api.petfinder.com/pet.getRandom?key=" + settings.SECRET_KEY + "&format=json"+"&animal=barnyard"
         randomBarnyard = requests.get(barnyardQuery).json()
         barnyard = randomBarnyard['petfinder']['petIds']['id']['$t']
@@ -223,7 +224,6 @@ class APISample(View):
             #print(photos[i])
             #print("")
             #print('')
-
 
             if petList[i]['sex']['$t'] == 'M':
                 sex.append('Male')
@@ -339,11 +339,6 @@ class FindPet(View):
             # print(photos[i])
             # print("")
             # print('')
-
-
-
-
-
 
             if petList[i]['sex']['$t'] == 'M':
                 sex.append('Male')

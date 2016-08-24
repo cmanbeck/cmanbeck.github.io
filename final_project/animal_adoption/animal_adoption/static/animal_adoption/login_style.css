@@ -1,16 +1,13 @@
 body {
-	font-family: 'Lato', sans-serif;
-	/*background: url('cat-1468491613Sf4.jpg');
-	background-repeat: no-repeat;
-	background-size: cover;*/
-	/* I HAVE NO DESIGN SENSE */
-	background-color: #68D265
+    background-color: #feffe1;
+    color: #3EB5FE;
+    font-family: 'Poiret One', cursive;
 }
 
 .button {
-	background-color: #1CACF6;
-	color: white;
-	font-family: 'Lato', sans-serif;
+	background-color: #D9F5FD;
+    color: #3EB5FE;
+	font-family: 'Poiret One', cursive;
 	font-size: 24px;
 	cursor: pointer;
 	border: none;
@@ -25,7 +22,7 @@ body {
 }
 
 .button:hover {
-    background-color: #0879FD;
+    background-color: #3EB5FE;
     color: white;
 }
 
