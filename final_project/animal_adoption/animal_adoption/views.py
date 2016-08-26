@@ -707,6 +707,7 @@ class Details(View):
         "Animal: "+animal,
         "Breed: "+breed,
         "Sex: " +sex,
+        "Size: " +size,
         "Age: "+age,
         options,
         "Status: "+status]

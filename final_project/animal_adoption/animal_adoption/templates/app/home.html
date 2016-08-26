@@ -103,7 +103,9 @@
 				<div class = "shelter-search-text">
 					<h1>Name</h1>
 					<input type = 'text' name = 'name' placeholder="Name of the shelter">
-					<input type = 'submit' value = 'Search' class = "search-button">
+					<br>
+					<!-- <br> -->
+					<input type = 'submit' value = 'Search' class = "shelter-search-button">
 				</div>
 			</form>
 
@@ -135,7 +137,7 @@
 					{% if "http" in info %}
 						<img id="featured-pet-photo" src={{info}} alt="Thumbnail Picture">
 					{% else %}
-						<div class = "pet-info">{{info}}</div>
+						<div class = "featured-pet-info">{{info}}</div>
 					{% endif %}
 
 				{% endfor %}
@@ -167,7 +169,7 @@
 					<img class = "share-photo" id="twitter-photo" src="http://www.sketchappsources.com/resources/source-image/twitterlogo_1x.png" alt="twitter">
 				</a>
 
-				<a href="mailto:?subject=Check%20out%20PetFinder!&body=http://wikipedia.org" target="_blank">
+				<a href="mailto:?subject=Check%20out%20PetSearcher!&body=http://wikipedia.org" target="_blank">
 					<img class = "share-photo" id="mail-photo" src="http://aqbsoft.com/m/photos/get_image/file/b491e1e7f273f5a2c9c3307ca69ff8f3.jpg" alt="email">
 				</a>
 		</article>

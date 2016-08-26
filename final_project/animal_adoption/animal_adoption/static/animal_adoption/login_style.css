@@ -1,13 +1,13 @@
 body {
     background-color: #feffe1;
     color: #3EB5FE;
-    font-family: 'Poiret One', cursive;
+    font-family: 'Poiret One';
 }
 
 .button {
 	background-color: #D9F5FD;
     color: #3EB5FE;
-	font-family: 'Poiret One', cursive;
+	font-family: 'Poiret One';
 	font-size: 24px;
 	cursor: pointer;
 	border: none;

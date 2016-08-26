@@ -1,7 +1,7 @@
 body {
     background-color: #feffe1;
     color: #3EB5FE;
-    font-family: 'Poiret One', cursive;
+    font-family: 'Poiret One';
 }
 
 a {
@@ -39,7 +39,7 @@ a:hover {
 }
 
 h1, h2, h3, h4 {
-    font-family: 'Poiret One', cursive;
+    font-family: 'Poiret One';
 }
 
 .search {
@@ -56,7 +56,6 @@ h1, h2, h3, h4 {
     margin: auto;
 }
 
-
 .search-div {
     margin-top: 17px;
     margin-left: 17px;
@@ -71,12 +70,12 @@ h1, h2, h3, h4 {
 .search-button {
     background-color: #D9F5FD;
     color: #3EB5FE;
-    font-family: 'Poiret One', cursive;
+    font-family: 'Poiret One';
     font-size: 24px;
     cursor: pointer;
     border: none;
     border-radius: 12px;
-    width: 140px;
+    width: 13%;
     height: 80px;
     /*margin-top: 2%;*/
     text-align: center;
@@ -86,6 +85,28 @@ h1, h2, h3, h4 {
 }
 
 .search-button:hover {
+    background-color: #3EB5FE;
+    color: white;
+}
+
+.shelter-search-button {
+    background-color: #D9F5FD;
+    color: #3EB5FE;
+    font-family: 'Poiret One';
+    font-size: 24px;
+    cursor: pointer;
+    border: none;
+    border-radius: 12px;
+    width: 70%;
+    height: 80px;
+    /*margin-top: 2%;*/
+    text-align: center;
+    text-decoration: none;
+    -webkit-transition-duration: 0.4s;
+    transition-duration: 0.4s;
+}
+
+.shelter-search-button:hover {
     background-color: #3EB5FE;
     color: white;
 }
@@ -105,26 +126,33 @@ h1, h2, h3, h4 {
 .featured-pets {
     display: inline-block;
     background-color: #E6F9E0;
-        border-radius: 5px;
+    border-radius: 5px; 
     height: 90%;
     width: 30%;
     /*margin: auto;*/
-        margin-left: 1.8%;
-        margin-right: 1.8%;
+    margin-left: 1.8%;
+    margin-right: 1.8%;
     margin-top: 1.8%;
-        margin-bottom: 1.8%;
-        overflow-x: scroll;
-        overflow-y: hidden;
-        white-space: nowrap;
+    margin-bottom: 1.8%;
+    overflow-x: scroll;
+    overflow-y: hidden;
+    white-space: nowrap;
 }
 
 #featured-pet-photo{
-        margin-left: 20%;
-        margin-right: 10%;
+    margin-left: 20%;
+    margin-right: 10%;
     width: auto;
     height: auto;
-        max-width: 200px;
-        max-height: 200px;
+    max-width: 200px;
+    max-height: 200px;
+}
+
+.featured-pet-info {
+    padding-top: 5px;
+    margin-left: 20%;
+    margin-right: 10%;
+    color: #3EB5FE;
 }
 
 .aside-1 {
@@ -191,9 +219,9 @@ h1, h2, h3, h4 {
     width: 33%;
     display: inline-block;
     background-color: white;
-        overflow-x: scroll;
-        overflow-y: hidden;
-        white-space: nowrap;
+    overflow-x: scroll;
+    overflow-y: hidden;
+    white-space: nowrap;
 }
 
 #shelter-search-info{
@@ -207,23 +235,23 @@ h1, h2, h3, h4 {
     width: 400px;
     display: inline-block;
     background-color: white;
-        overflow-x: scroll;
-        overflow-y: scroll;
-        white-space: nowrap;
+    overflow-x: scroll;
+    overflow-y: scroll;
+    white-space: nowrap;
 }
 
 .pet-photo {
-    margin-left: 60px;
+    margin-left: 15%;
     width: auto;
     height: auto;
-        max-width: 250px;
-        max-height: 250px;
+    max-width: 250px;
+    max-height: 250px;
     border-radius: 5px;
 }
 
 .pet-info {
     padding-top: 5px;
-    margin-left: 60px;
+    margin-left: 15%;
     color: #3EB5FE;
 }
 
@@ -235,7 +263,8 @@ h1, h2, h3, h4 {
     text-decoration: none;
     border: none;
     border-radius: 5px;
-    margin-left: 60px;
+    margin-left: 15%;
+    margin-top: 10%;
     -webkit-transition-duration: 0.4s;
     transition-duration: 0.4s;
     cursor: pointer;
@@ -248,18 +277,29 @@ h1, h2, h3, h4 {
 
 .pet-name {
     font-size : 48px;
+    padding: 15px;
     /*font-weight: bold;*/
 }
 
 .basic-pet {
     font-size: 24px;
+    padding: 15px;
 }
 
 .pet-description {
+    padding: 15px;
     font-size: 24px;
+}
+
+.pet-description-photo {
+    padding: 15px;
 }
 
 .shelter-description {
     font-size: 24px;
+    padding: 15px;
     background-color: white;
+    /*margin: auto;*/
+    width: 40%;
+    height: 100%;
 }
